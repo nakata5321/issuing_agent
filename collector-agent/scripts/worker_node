@@ -68,11 +68,14 @@ class WorkerNode:
             log_file_path = os.path.join(rp.get_path(
                 "collector-agent"), "datalog", "log.log")
 
+            rospy.loginfo("Collecting data...")
+
             with open(log_file_path, 'r') as f:
                 content = f.read()
                 pub.publish(String(data=content))
 
-            rospy.loginfo('Worker works!')
+            rospy.loginfo('Issuing sertificates...')
+            rospy.sleep(5)
 
             self.liability_proxy.finish(liability.address.address, True)
             rospy.loginfo('Process complete.')
