@@ -1,3 +1,0 @@
-<launch>
-  <node name="worker" pkg="collector-agent" type="worker_node" output="screen" />
-</launch>
