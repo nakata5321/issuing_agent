@@ -16,7 +16,7 @@ export const ROBONOMICS = {
 export const VALIDATOR = '0x17B82177D8753bd8090dadA60B953CFaDD9eF492';
 // export const VALIDATOR = '0x0000000000000000000000000000000000000000';
 export const MODEL = 'QmUB6ajZTLLMZg7re1v4hw44aoG8HDQDHr9JyujU264Aw2';
-export const OBJECTIVE = 'Qmbm3o2wkqseSEi5F69CPAuDrsKnrwTJ3HN5FVLPgLHKUm';
+export const OBJECTIVE = 'QmVAFgUxBitKqtV2sjaYcHkKfcAPVy3GswhaE5n5bcgLkf';
 export const RESULT = 'QmVZzCia7Ptm3CiDUcF9ZYkKQuMMjFCKYjS2ckZYzMJsm7';
 export const PRICE = 0;
 

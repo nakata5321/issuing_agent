@@ -30,31 +30,10 @@ class TraderNode:
 
         rospy.Service('make_demand', Empty, self.act)
 
-        rospy.Subscriber('/liability/infochan/incoming/demand',
-                         Demand, self.on_incoming_demand)
-        rospy.Subscriber('/liability/infochan/incoming/offer',
-                         Offer, self.on_incoming_offer)
-
         rospy.loginfo('Trader node launched.')
 
-    def act(self):
-        self.make_demand(rospy.get_param('~objective'), 0)
-
-    def on_incoming_demand(self, incoming: Demand):
-        rospy.loginfo('Incoming demand %s...', str(incoming))
-        if (incoming.model.multihash == rospy.get_param('~model') and incoming.token.address == rospy.get_param('~token')):
-            rospy.loginfo('For my model and token!')
-            self.act(incoming)  # reactive strategy
-        else:
-            rospy.loginfo('Not fits my model or token, skip it.')
-
-    def on_incoming_offer(self, incoming: Offer):
-        rospy.loginfo('Incoming offer %s...', str(incoming))
-        if (incoming.model.multihash == rospy.get_param('~model') and incoming.token.address == rospy.get_param('~token')):
-            rospy.loginfo('For my model and token!')
-            self.act(incoming)  # reactive strategy
-        else:
-            rospy.loginfo('Not fits my model or token, skip it.')
+    def act(self, data):
+        self.make_demand(rospy.get_param('~objective'), '0')
 
     def make_deadline(self):
         lifetime = int(rospy.get_param('~order_lifetime'))
@@ -68,10 +47,14 @@ class TraderNode:
         demand = Demand()
         demand.model = Multihash()
         demand.model.multihash = rospy.get_param('~model')
-        demand.objective = objective
+        demand.objective = Multihash()
+        demand.objective.multihash = objective
         demand.token = Address()
         demand.token.address = rospy.get_param('~token')
-        demand.cost = cost
+        demand.lighthouse = Address()
+        demand.lighthouse.address = rospy.get_param('~lighthouse')
+        demand.cost = UInt256()
+        demand.cost.uint256 = cost
         demand.validatorFee = UInt256()
         demand.validatorFee.uint256 = '0'
         demand.validator = Address()

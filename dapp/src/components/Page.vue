@@ -198,7 +198,7 @@ export default {
     this.fetchBalance();
 
     // FOR TEST PURPOSE ONLY
-    this.liability.push({
+    /* this.liability.push({
       "address": "0x911Ea2bE315f4dEDbc8C457eB9A1234971f59A81",
       "lighthouse": "0x202a09A451DE674d2d65Bf1C90968a8d8F72cf7b",
       "validator": "0x17B82177D8753bd8090dadA60B953CFaDD9eF492",
@@ -209,7 +209,7 @@ export default {
       "promisee": "0x4af74a76aA7B934C7397FDD0C2428762c8F7c550",
       "promisor": "0xEb51Cf2a474BfC756cD40A9e9092E6eEe15f2dc3",
       "result": "QmVZzCia7Ptm3CiDUcF9ZYkKQuMMjFCKYjS2ckZYzMJsm7"
-    });
+    }); */
   },
   methods: {
     fetchBalance() {
