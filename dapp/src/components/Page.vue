@@ -53,8 +53,8 @@
 
                 <b>Отправить показания на проверку</b>
                 <br>
-                <v-btn @click="confirm(item.address)" :disabled="resultSent ? true : false" >Подтвердить</v-btn>
-                <v-btn  :disabled="resultSent ? true : false" >Отклонить</v-btn>
+                <v-btn @click="confirm(item.address)"  >Подтвердить</v-btn>
+                <v-btn   >Отклонить</v-btn>
                 <br>
 
               </v-card-text>
@@ -145,8 +145,9 @@ export default {
         this.nonce = Number(r);
       });
     this.$robonomics.onResult(msg => {
-      console.log(msg);
+      console.log("onResult msg", msg);
       const item = this.results.find(item => item.liability === msg.liability);
+      console.log('liability item from results', item);
       if (!item) {
         const liability = new Liability(
           this.$robonomics.web3,
@@ -154,13 +155,11 @@ export default {
           "0x0000000000000000000000000000000000000000"
         );
         liability.getInfo().then(info => {
+          console.log("getInfo()", info);
           if (
             info.validator ===
             this.$robonomics.web3.toChecksumAddress(config.VALIDATOR)
           ) {
-            if (item.status == "finish") {
-              this.results = [{...msg, status: "finish"}, ...this.results];
-            } else {
               this.results = [
                 {
                   ...msg,
@@ -168,7 +167,7 @@ export default {
                 },
                 ...this.results
               ];
-            }
+              console.log("added to results", this.results);
           }
         });
       }
@@ -189,10 +188,13 @@ export default {
             },
             ...this.liability
           ];
+          console.log(this.liability);
         });
         liability.onResult().then(result => {
+          console.log("liability.onResult()", result);
           this.setResult(liability.address, result, true);
         });
+        // this.setResult(liability.address, config.RESULT, true);
       }
     });
     this.fetchBalance();
@@ -238,7 +240,9 @@ export default {
       }
     },
     confirm(address) {
+      console.log('confirm', address);
       const item = this.results.find(item => item.liability === address);
+      console.log('confirm', item);
       this.$robonomics
         .sendResult({
           liability: address,
