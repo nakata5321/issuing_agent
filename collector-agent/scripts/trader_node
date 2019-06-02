@@ -14,43 +14,6 @@ from ipfs_common.msg import Multihash
 
 
 class TraderNode:
-    """
-    A node used to listen a market and react by defined strategy.
-
-    Usage
-    =====
-    TraderNode.act - a place for your strategy to react on incomming offers and demands
-    By default it use reactive strategy to act on incoming offers and demands. If you would like to
-    change it, please take a look on TraderNode.on_incoming_* functions.
-
-    Important note
-    ==============
-    Please ensure you've made an *approve* on *factory.<version>.robonomics.eth* contract if you
-    publish demands. Take a look on *ethereum_common* package for appropriate services.
-
-    API
-    ===
-
-    Parameters
-    ----------
-    ~model : str
-        Agent model IPFS hash
-    ~token : str
-        Contract address of token agent recieve as payment
-    ~lot_lifetime : int
-        How many blockcs agent's offers and demands are valid
-
-    Subscribed Topics
-    -----------------
-    /liability/infochan/incoming/demand : robonomics_msgs/Demand
-    /liability/infochan/incoming/offer : robonomics_msgs/Offer
-
-    Services Called
-    ---------------
-    /eth/current_block
-    /eth/accounts
-
-    """
 
     def __init__(self):
         rospy.init_node('trader')
@@ -74,13 +37,9 @@ class TraderNode:
         rospy.loginfo('Trader node launched.')
 
     def act(self, incoming):
-        """ Trader reaction tactics on incoming offers and demands """
-        # if type(incoming) is Offer:
-        #     self.make_demand(incoming.objective, incoming.cost) # to publish a demand
-        # if type(incoming) is Demand:
-        #     self.make_offer(incoming.objective, incoming.cost) # to publish an offer
-        # TODO: PLEASE IMPLEMENT YOUR TRADING STRATEGY HERE
-        pass
+        if type(incoming) is Demand:
+            # to publish an offer
+            self.make_offer(incoming.objective, incoming.cost)
 
     def on_incoming_demand(self, incoming: Demand):
         rospy.loginfo('Incoming demand %s...', str(incoming))
@@ -104,26 +63,6 @@ class TraderNode:
             '/eth/current_block', BlockNumber)().number + lifetime
         return str(deadline)
 
-    def make_demand(self, objective, cost):
-        rospy.loginfo('Making demand...')
-
-        demand = Demand()
-        demand.model = Multihash()
-        demand.model.multihash = rospy.get_param('~model')
-        demand.objective = objective
-        demand.token = Address()
-        demand.token.address = rospy.get_param('~token')
-        demand.cost = cost
-        demand.validatorFee = UInt256()
-        demand.validatorFee.uint256 = '0'
-        demand.validator = Address()
-        demand.validator.address = '0x0000000000000000000000000000000000000000'
-        demand.deadline = UInt256()
-        demand.deadline.uint256 = self.make_deadline()
-
-        self.signing_demand.publish(demand)
-        rospy.loginfo(demand)
-
     def make_offer(self, objective, cost):
         rospy.loginfo('Making offer...')
 
@@ -137,7 +76,7 @@ class TraderNode:
         offer.lighthouse = Address()
         offer.lighthouse.address = rospy.get_param('~lighthouse')
         offer.validator = Address()
-        offer.validator.address = '0x0000000000000000000000000000000000000000'
+        offer.validator.address = rospy.get_param('~validator')
         offer.lighthouseFee = UInt256()
         offer.lighthouseFee.uint256 = '0'
         offer.deadline = UInt256()

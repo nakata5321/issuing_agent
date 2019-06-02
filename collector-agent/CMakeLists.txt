@@ -24,3 +24,10 @@ install(
     DESTINATION
         ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
 )
+
+install(
+    FILES
+        datalog/log.log
+    DESTINATION
+        ${CATKIN_PACKAGE_SHARE_DESTINATION}/datalog
+)
