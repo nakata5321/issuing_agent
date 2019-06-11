@@ -8,7 +8,7 @@ import rospy
 from std_srvs.srv import Empty
 
 # Robonomics communication
-from robonomics_msgs.msg import Offer, Demand
+from robonomics_msgs.msg import Demand
 from ethereum_common.msg import Address, UInt256
 from ethereum_common.srv import Accounts, BlockNumber
 from ipfs_common.msg import Multihash

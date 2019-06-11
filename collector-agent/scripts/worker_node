@@ -9,15 +9,14 @@ from threading import Thread
 # ROS
 import rospy
 from std_msgs.msg import String
-from std_srvs.srv import Empty
 
 # AIRA
 from robonomics_liability.msg import Liability
-from robonomics_liability.srv import StartLiability, StartLiabilityRequest
-from robonomics_liability.srv import FinishLiability, FinishLiabilityRequest
+from robonomics_liability.srv import StartLiability, FinishLiability
 
-import os
-import rospkg
+import psycopg2
+import sys
+import json
 
 
 class WorkerNode:
@@ -44,6 +43,22 @@ class WorkerNode:
             rospy.ServiceProxy('liability/start', StartLiability),
             rospy.ServiceProxy('liability/finish', FinishLiability))
 
+        try:
+            # Put user name, password etc
+            self.connection = psycopg2.connect(
+                user="", password="", host="", port="", database="")
+            cursor = self.connection.cursor()
+            # Print PostgreSQL Connection properties
+            print(self.connection.get_dsn_parameters(), "\n")
+            # Print PostgreSQL version
+            cursor.execute("SELECT version();")
+            record = cursor.fetchone()
+            print("You are connected to - ", record, "\n")
+
+        except (Exception, psycopg2.Error) as error:
+            print("Error while connecting to PostgreSQL", error)
+            sys.exit()
+
         rospy.loginfo('Worker node launched.')
 
     def on_new_liability(self, msg):
@@ -64,17 +79,19 @@ class WorkerNode:
         def callback(task):
             rospy.loginfo('Got new tast: %s', task)
 
-            rp = rospkg.RosPack()
-            log_file_path = os.path.join(rp.get_path(
-                "collector-agent"), "datalog", "log.log")
-
             rospy.loginfo("Collecting data...")
 
-            with open(log_file_path, 'r') as f:
-                content = f.read()
-                pub.publish(String(data=content))
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT measure FROM solar;")
+
+            last = 0
+            for item in cursor:
+                obj = json.loads(item)
+                last = obj['children'][0]['parameter'][1]['value']['doubleValue']
+                pub.publish(String(data=item))
 
             rospy.loginfo('Issuing sertificates...')
+            # TODO TODO
             rospy.sleep(5)
 
             self.liability_proxy.finish(liability.address.address, True)

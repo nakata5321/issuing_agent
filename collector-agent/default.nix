@@ -1,7 +1,10 @@
-{ stdenv
+{ pkgs ? import <nixpkgs> { }
+, stdenv
 , mkRosPackage
 , robonomics_comm
 }:
+
+with pkgs.python37Packages;
 
 mkRosPackage rec {
   name = "${pname}-${version}";
@@ -10,7 +13,7 @@ mkRosPackage rec {
 
   src = ./.;
 
-  propagatedBuildInputs = [ robonomics_comm ];
+  propagatedBuildInputs = [ robonomics_comm pkgs.python37Packages.psycopg2 ];
 
   meta = with stdenv.lib; {
     description = "The second part of renewable energy agent";
