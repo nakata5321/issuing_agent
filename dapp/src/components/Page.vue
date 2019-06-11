@@ -41,22 +41,25 @@
           <v-card v-if="liability.length>0">
             <v-card-title primary-title>
               <div>
-                <h3 class="headline mb-0">Показания с 01 по 30 мая 2019 года</h3>
+                <h3 class="headline mb-0">Показания с 10 по 30 июня 2019 года</h3>
               </div>
             </v-card-title>
             <v-card-text v-for="(item, i) in liability" :key="i">
-                <b>Суммарная генерация: 100 МВт</b>
-                <br>
-                <b>Лог от счётчика:</b>
-                <a :href="`https://ipfs.io/ipfs/${item.result}`" target="_blank">{{ item.result }}</a>
-                <br>
+                <v-progress-linear v-if="frees.length === 0" :indeterminate="true"></v-progress-linear>
+                <div v-else v-for="(res, resIndex) in frees" :key="resIndex">
+                  <b>Суммарная генерация: 100 МВт</b>
+                  <br>
 
-                <b>Отправить показания на проверку</b>
-                <br>
-                <v-btn @click="confirm(item.address)"  >Подтвердить</v-btn>
-                <v-btn   >Отклонить</v-btn>
-                <br>
+                  <b>Лог от счётчика:</b>
+                  <a :href="`https://ipfs.io/ipfs/${res.hash}`" target="_blank">{{ res.hash }}</a>
+                  <br>
 
+                  <b>Отправить показания на проверку</b>
+                  <br>
+                  <v-btn @click="confirm(item.address)"  >Подтвердить</v-btn>
+                  <v-btn   >Отклонить</v-btn>
+                  <br>
+                </div>
               </v-card-text>
           </v-card>
         </v-flex>
@@ -71,11 +74,11 @@
               </div>
             </v-card-title>
             <v-card-text>
-              <div class="t-break" v-for="(item, i) in results" :key="i">
-                <div v-if="item.status === 'finish'">
+              <div class="t-break" v-if="result.length">
+                <div v-if="result.status === 'finish'">
                   <b>Проверка по открытым источникам данных о скорости ветра:</b> успешно.
                   <br>
-                  <b>Создан реестр зеленых сертификатов по адресу:</b> 0x
+                  <b>Создан реестр зеленых сертификатов по адресу:</b> {{ liability.address }}
                   <br>
                   <b>Выполнена транзакция на выдачу 100 зеленых сертификатов на адрес владельца</b> promisee
                 </div>
@@ -92,7 +95,7 @@
               </div>
             </v-card-title>
             <v-card-text>
-              <p class="t-break" v-for="(item, i) in results" :key="i">
+              <p class="t-break" v-if="result.length">
                 <b>ВИЭ:</b> {{ promisor }}
                 <br>
                 <b>Информация о выдаче зеленых сертификатов в распределенном реестре доступна по адресу:</b> {{ item.liability }}
@@ -127,8 +130,9 @@ export default {
       balance: 0,
       approveTrade: 0,
       loadingApprove: false,
-      liability: [],
-      results: [],
+      liability: {},
+      result: {},
+      frees: [],
       promisor: "",
       promisee: "",
       nonce: 0
@@ -145,73 +149,52 @@ export default {
         this.nonce = Number(r);
       });
     this.$robonomics.onResult(msg => {
-      console.log("onResult msg", msg);
-      const item = this.results.find(item => item.liability === msg.liability);
-      console.log('liability item from results', item);
-      if (!item) {
-        const liability = new Liability(
-          this.$robonomics.web3,
-          msg.liability,
-          "0x0000000000000000000000000000000000000000"
-        );
-        liability.getInfo().then(info => {
-          console.log("getInfo()", info);
-          if (
-            info.validator ===
-            this.$robonomics.web3.toChecksumAddress(config.VALIDATOR)
-          ) {
-              this.results = [
-                {
-                  ...msg,
-                  status: "new"
-                },
-                ...this.results
-              ];
-              console.log("added to results", this.results);
-          }
-        });
+      console.log("result unverified", msg);
+      if (this.liability.length) {
+        if (this.liability.address === msg.liability) {
+          const liability = new Liability(
+            this.$robonomics.web3,
+            msg.liability,
+            "0x0000000000000000000000000000000000000000"
+          );
+          liability.getInfo().then(info => {
+            console.log("getInfo()", info);
+            if (
+              info.validator ===
+              this.$robonomics.web3.toChecksumAddress(config.VALIDATOR)
+            ) {
+              this.result = {
+                ...msg,
+                status: "new"
+              };
+              console.log("added to result", this.result);
+            }
+          });
+        }
       }
     });
     this.$robonomics.onLiability((err, liability) => {
-      const item = this.liability.find(
-        item => item.address === liability.address
-      );
-      if (!item) {
-        liability.getInfo().then(info => {
+      liability.getInfo().then(info => {
+        if (info.model === config.MODEL) {
           this.promisor = info.promisor;
           this.promisee = info.promisee;
-          this.liability = [
+          this.liability =
             {
               address: liability.address,
               worker: liability.worker,
               ...info
-            },
-            ...this.liability
-          ];
+            };
+          console.log("info", info);
           console.log(this.liability);
-        });
-        liability.onResult().then(result => {
-          console.log("liability.onResult()", result);
-          this.setResult(liability.address, result, true);
-        });
-        // this.setResult(liability.address, config.RESULT, true);
-      }
+        }
+      });
+
+      liability.onResult().then(result => {
+        console.log("liability.onResult()", result);
+        this.setResult(liability.address, result, true);
+      });
     });
     this.fetchBalance();
-
-    // FOR TEST PURPOSE ONLY
-    /* this.liability.push({
-      "address": "0x911Ea2bE315f4dEDbc8C457eB9A1234971f59A81",
-      "lighthouse": "0x202a09A451DE674d2d65Bf1C90968a8d8F72cf7b",
-      "validator": "0x17B82177D8753bd8090dadA60B953CFaDD9eF492",
-      "model": "QmUB6ajZTLLMZg7re1v4hw44aoG8HDQDHr9JyujU264Aw2",
-      "objective": "Qmbm3o2wkqseSEi5F69CPAuDrsKnrwTJ3HN5FVLPgLHKUm",
-      "token": "0x966ebbfd7ecbcf44b1e05341976e0652cfa01360",
-      "cost": 0,
-      "promisee": "0x4af74a76aA7B934C7397FDD0C2428762c8F7c550",
-      "promisor": "0xEb51Cf2a474BfC756cD40A9e9092E6eEe15f2dc3",
-      "result": "QmVZzCia7Ptm3CiDUcF9ZYkKQuMMjFCKYjS2ckZYzMJsm7"
-    }); */
   },
   methods: {
     fetchBalance() {
@@ -235,8 +218,9 @@ export default {
     },
     setResult(address, result, check = true) {
       const i = this.liability.findIndex(item => item.address === address);
-      if (i >= 0) {
-        Vue.set(this.liability, i, { ...this.liability[i], result, check });
+      if (this.liability.address === address) {
+        this.liability.result = result;
+        this.liability.check = check;
       }
     },
     confirm(address) {

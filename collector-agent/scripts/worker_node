@@ -77,18 +77,21 @@ class WorkerNode:
         pub = rospy.Publisher(prefix + '/data', String, queue_size=128)
 
         def callback(task):
-            rospy.loginfo('Got new tast: %s', task)
+            # rospy.loginfo('Got new tast: %s', task)
 
             rospy.loginfo("Collecting data...")
 
             cursor = self.connection.cursor()
             cursor.execute("SELECT measure FROM solar;")
 
+            rospy.loginfo("Got {} rows...".format(cursor.rowcount))
+
             last = 0
             for item in cursor:
-                obj = json.loads(item)
+                line = item[0]
+                obj = json.loads(line)
                 last = obj['children'][0]['parameter'][1]['value']['doubleValue']
-                pub.publish(String(data=item))
+                pub.publish(String(data=line))
 
             rospy.loginfo('Issuing sertificates...')
             # TODO TODO

@@ -5,7 +5,7 @@
 
 # ROS
 import rospy
-from std_srvs.srv import Empty
+from std_srvs.srv import Empty, EmptyResponse
 
 # Robonomics communication
 from robonomics_msgs.msg import Demand
@@ -34,6 +34,7 @@ class TraderNode:
 
     def act(self, data):
         self.make_demand(rospy.get_param('~objective'), '0')
+        return EmptyResponse()
 
     def make_deadline(self):
         lifetime = int(rospy.get_param('~order_lifetime'))
