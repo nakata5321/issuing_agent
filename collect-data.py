@@ -47,7 +47,12 @@ def main():
 
     while True:
         print("getting data...")
-        c.request('GET', '/api/v1/object/', headers=headers)
+        try:
+            c.request('GET', '/api/v1/object/', headers=headers)
+        except:
+            print("Got an error. Retrying...")
+            sleep(10)
+            continue
         # get the response back
         res = c.getresponse()
         # at this point you could check the status etc

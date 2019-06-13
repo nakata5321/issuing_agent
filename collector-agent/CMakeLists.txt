@@ -27,7 +27,7 @@ install(
 
 install(
     FILES
-        datalog/log.log
+        abi/token.json
     DESTINATION
-        ${CATKIN_PACKAGE_SHARE_DESTINATION}/datalog
+        ${CATKIN_PACKAGE_SHARE_DESTINATION}/abi
 )

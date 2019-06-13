@@ -14,6 +14,8 @@ from std_msgs.msg import String
 from robonomics_liability.msg import Liability
 from robonomics_liability.srv import StartLiability, FinishLiability
 
+from web3 import Web3, HTTPProvider
+
 import psycopg2
 import sys
 import json
@@ -59,6 +61,13 @@ class WorkerNode:
             print("Error while connecting to PostgreSQL", error)
             sys.exit()
 
+        web3_http_provider = rospy.get_param('~web3_http_provider')
+        http_provider = HTTPProvider(web3_http_provider)
+        self.web3 = Web3(http_provider)
+        self.token_contract = rospy.get_param('~token_contract')
+        self.token_contract_abi = json.loads(
+            rospy.get_param('~token_contract_abi'))
+
         rospy.loginfo('Worker node launched.')
 
     def on_new_liability(self, msg):
@@ -94,6 +103,18 @@ class WorkerNode:
                 pub.publish(String(data=line))
 
             rospy.loginfo('Issuing sertificates...')
+
+            contract = self.web3.eth.contract(
+                address=self.token_contract, abi=self.token_contract_abi)
+            nonce = w3.eth.getTransactionCount('public address')
+
+            unicorn_txn = contract.functions.transfer('token address', last, ).buildTransaction({
+                'chainId': 4451,
+                'gas': 70000,
+                'gasPrice': w3.toWei('1', 'gwei'),
+                'nonce': nonce,
+            })
+
             # TODO TODO
             rospy.sleep(5)
 

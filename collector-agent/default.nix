@@ -13,7 +13,7 @@ mkRosPackage rec {
 
   src = ./.;
 
-  propagatedBuildInputs = [ robonomics_comm pkgs.python37Packages.psycopg2 ];
+  propagatedBuildInputs = [ robonomics_comm pkgs.python37Packages.psycopg2 pkgs.python37Packages.web3 ];
 
   meta = with stdenv.lib; {
     description = "The second part of renewable energy agent";
