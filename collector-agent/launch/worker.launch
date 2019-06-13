@@ -3,10 +3,12 @@
   <arg name="web3_http_provider" default="https://sidechain.aira.life/rpc" />
   <arg name="web3_ws_provider" default="wss://sidechain.aira.life/ws" />
   <arg name="token_contract" default="0xc0d9e4a3289cd0b0ef1922c3941fecfa6096525b" />
+  <arg name="keyfile" default="" />
 
   <node name="worker" pkg="collector-agent" type="worker_node" output="screen">
     <param name="web3_http_provider" value="$(arg web3_http_provider)" />
     <param name="web3_ws_provider" value="$(arg web3_ws_provider)" />
+    <param name="keyfile" value="$(arg keyfile)" />
     <param name="token_contract" value="$(arg token_contract)" />
     <param name="token_contract_abi" textfile="$(find collector-agent)/abi/token.json" />
   </node>
