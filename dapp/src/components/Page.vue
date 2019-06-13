@@ -38,25 +38,25 @@
         </v-flex>
 
         <v-flex md12>
-          <v-card v-if="liability.length>0">
+          <v-card v-if="liability">
             <v-card-title primary-title>
               <div>
                 <h3 class="headline mb-0">Показания с 10 по 30 июня 2019 года</h3>
               </div>
             </v-card-title>
-            <v-card-text v-for="(item, i) in liability" :key="i">
-                <v-progress-linear v-if="frees.length === 0" :indeterminate="true"></v-progress-linear>
-                <div v-else v-for="(res, resIndex) in frees" :key="resIndex">
+            <v-card-text>
+                <v-progress-linear v-if="!result" :indeterminate="true"></v-progress-linear>
+                <div v-else>
                   <b>Суммарная генерация: 100 МВт</b>
                   <br>
 
                   <b>Лог от счётчика:</b>
-                  <a :href="`https://ipfs.io/ipfs/${res.hash}`" target="_blank">{{ res.hash }}</a>
+                  <a :href="`https://ipfs.io/ipfs/${result.result}`" target="_blank">{{ result.result }}</a>
                   <br>
 
                   <b>Отправить показания на проверку</b>
                   <br>
-                  <v-btn @click="confirm(item.address)"  >Подтвердить</v-btn>
+                  <v-btn @click="confirm(liability.address)"  >Подтвердить</v-btn>
                   <v-btn   >Отклонить</v-btn>
                   <br>
                 </div>
@@ -74,7 +74,7 @@
               </div>
             </v-card-title>
             <v-card-text>
-              <div class="t-break" v-if="result.length">
+              <div class="t-break" v-if="result">
                 <div v-if="result.status === 'finish'">
                   <b>Проверка по открытым источникам данных о скорости ветра:</b> успешно.
                   <br>
@@ -95,15 +95,17 @@
               </div>
             </v-card-title>
             <v-card-text>
-              <p class="t-break" v-if="result.length">
-                <b>ВИЭ:</b> {{ promisor }}
-                <br>
-                <b>Информация о выдаче зеленых сертификатов в распределенном реестре доступна по адресу:</b> {{ item.liability }}
-                <br>
-                <b>Лог от ВИЭ:</b> ipfs hash
-                <br>
-                <b>Лог от верификатора:</b> ipfs hash
-              </p>
+              <div class="t-break" v-if="result">
+                <div v-if="result.status === 'finish'">
+                  <b>ВИЭ:</b> {{ promisor }}
+                  <br>
+                  <b>Информация о выдаче зеленых сертификатов в распределенном реестре доступна по адресу:</b> {{ result.liability }}
+                  <br>
+                  <b>Лог от ВИЭ:</b> ipfs hash
+                  <br>
+                  <b>Лог от верификатора:</b> ipfs hash
+                </div>
+              </div>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -114,7 +116,7 @@
 
 <script>
 import { Liability } from "robonomics-js";
-import Vue from "vue";
+// import Vue from "vue";
 import * as config from "../config";
 
 export default {
@@ -130,9 +132,8 @@ export default {
       balance: 0,
       approveTrade: 0,
       loadingApprove: false,
-      liability: {},
-      result: {},
-      frees: [],
+      liability: null,
+      result: null,
       promisor: "",
       promisee: "",
       nonce: 0
@@ -150,7 +151,7 @@ export default {
       });
     this.$robonomics.onResult(msg => {
       console.log("result unverified", msg);
-      if (this.liability.length) {
+      if (this.liability) {
         if (this.liability.address === msg.liability) {
           const liability = new Liability(
             this.$robonomics.web3,
@@ -184,7 +185,7 @@ export default {
               worker: liability.worker,
               ...info
             };
-          console.log("info", info);
+          //console.log("info", info);
           console.log(this.liability);
         }
       });
@@ -217,15 +218,17 @@ export default {
         });
     },
     setResult(address, result, check = true) {
-      const i = this.liability.findIndex(item => item.address === address);
+      // const i = this.liability.findIndex(item => item.address === address);
+      console.log("setResult", address);
       if (this.liability.address === address) {
         this.liability.result = result;
         this.liability.check = check;
+        this.result.status = 'finish';
       }
     },
     confirm(address) {
       console.log('confirm', address);
-      const item = this.results.find(item => item.liability === address);
+      const item = this.result;
       console.log('confirm', item);
       this.$robonomics
         .sendResult({
