@@ -107,9 +107,12 @@ class WorkerNode:
             last = 0
             for item in cursor:
                 line = item[0]
-                obj = json.loads(line)
-                last = obj['children'][0]['parameter'][1]['value']['doubleValue']
-                pub.publish(String(data=line))
+                try:
+                    obj = json.loads(line)
+                    last = obj['children'][0]['parameter'][1]['value']['doubleValue']
+                    pub.publish(String(data=line))
+                except ValueError as e:
+                    print("{} {}".format(e, line))
 
             rospy.loginfo('Issuing {} sertificates...'.format(last))
 
@@ -117,7 +120,7 @@ class WorkerNode:
                 address=self.token_contract, abi=self.token_contract_abi)
             nonce = self.web3.eth.getTransactionCount(self.eth_address)
 
-            transfer_txn = contract.functions.mint(promisee, int(last) * 1000).buildTransaction({
+            transfer_txn = contract.functions.mint(promisee, int(last * 1000)).buildTransaction({
                 'chainId': 4451,
                 'gas': 70000,
                 'gasPrice': self.web3.toWei('0', 'gwei'),

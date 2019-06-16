@@ -174,6 +174,9 @@ export default {
         }
       }
     });
+    this.$robonomics.onDemand(msg => {
+      console.log("demand", msg);
+    });
     this.$robonomics.onLiability((err, liability) => {
       liability.getInfo().then(info => {
         if (info.model === config.MODEL) {
@@ -185,8 +188,7 @@ export default {
               worker: liability.worker,
               ...info
             };
-          //console.log("info", info);
-          console.log(this.liability);
+          console.log("liability", this.liability);
         }
       });
 

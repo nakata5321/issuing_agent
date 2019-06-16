@@ -55,6 +55,10 @@ def main():
             continue
         # get the response back
         res = c.getresponse()
+        if res.status != 200:
+            sleep(10)
+            continue
+
         # at this point you could check the status etc
         # this gets the page text
         data = res.read().decode("utf-8")
