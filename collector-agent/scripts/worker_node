@@ -5,6 +5,7 @@
 from collections import namedtuple
 from queue import Queue
 from threading import Thread
+from datetime import date
 
 # ROS
 import rospy
@@ -92,6 +93,9 @@ class WorkerNode:
 
         prefix = '/liability/eth_' + liability.address.address
         pub = rospy.Publisher(prefix + '/data', String, queue_size=128)
+        pub_tx = rospy.Publisher(prefix + '/txhash', String, queue_size=128)
+        pub_period = rospy.Publisher(
+            prefix + '/period', String, queue_size=128)
         promisee = liability.promisee.address
 
         def callback(task):
@@ -133,6 +137,13 @@ class WorkerNode:
             tx_hash = self.web3.eth.sendRawTransaction(
                 signed_txn.rawTransaction)
             print("Tx hash {}".format(tx_hash.hex()))
+            pub_tx.publish(String(data=tx_hash.hex()))
+
+            first_day = date(2019, 6, 10)
+            today = date.today()
+            build_date = "from {} to {}".format(
+                first_day.strftime("%B %d"), today.strftime("%B %d"))
+            pub_period.pub(String(data=build_date))
 
             # TODO TODO
             rospy.sleep(5)
