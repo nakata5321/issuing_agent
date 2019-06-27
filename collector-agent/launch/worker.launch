@@ -2,7 +2,7 @@
   <!-- Sidechain -->
   <arg name="web3_http_provider" default="https://sidechain.aira.life/rpc" />
   <arg name="web3_ws_provider" default="wss://sidechain.aira.life/ws" />
-  <arg name="token_contract" default="0xC0D9E4a3289cD0b0EF1922C3941FeCfA6096525B" />
+  <arg name="token_contract" default="0x6AD1947918cbc5a60cebce31BD98A01b2EC636ba" />
   <arg name="keyfile" default="" />
 
   <node name="worker" pkg="collector-agent" type="worker_node" output="screen">
