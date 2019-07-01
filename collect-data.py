@@ -49,12 +49,13 @@ def main():
         print("getting data...")
         try:
             c.request('GET', '/api/v1/object/', headers=headers)
+            # get the response back
+            res = c.getresponse()
         except:
             print("Got an error. Retrying...")
             sleep(10)
             continue
-        # get the response back
-        res = c.getresponse()
+
         if res.status != 200:
             sleep(10)
             continue
