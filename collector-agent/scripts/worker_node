@@ -150,6 +150,8 @@ class WorkerNode:
             pub_tx.publish(String(data=tx_hash.hex()))
             '''
 
+            rospy.sleep(2)  # let publishers to deliver messages
+
             first_day = date(2019, 6, 10)
             today = date.today()
             build_date = "from {} to {}".format(
