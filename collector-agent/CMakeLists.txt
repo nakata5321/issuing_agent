@@ -11,23 +11,16 @@ catkin_package()
 
 catkin_install_python(
     PROGRAMS
-        scripts/trader_node
-        scripts/worker_node
+        scripts/applicant_node
+        scripts/collector_node
     DESTINATION
         ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 install(
     FILES
-        launch/trader.launch
-        launch/worker.launch
+        launch/applicant.launch
+        launch/collector.launch
     DESTINATION
         ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
-)
-
-install(
-    FILES
-        abi/token.json
-    DESTINATION
-        ${CATKIN_PACKAGE_SHARE_DESTINATION}/abi
 )
