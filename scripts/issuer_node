@@ -20,8 +20,8 @@ from ipfs_common.msg import Multihash
 class IssuerNode:
 
     def __init__(self):
-        rospy.init_node('trader')
-        rospy.loginfo('Launching trader node...')
+        rospy.init_node('issuer')
+        rospy.loginfo('Launching issuer node...')
 
         rospy.wait_for_service('/eth/current_block')
         rospy.wait_for_service('/eth/accounts')
@@ -36,7 +36,7 @@ class IssuerNode:
 
         self.ipfs = connect('https://ipfs.infura.io', 5001)
 
-        rospy.loginfo('Trader node launched.')
+        rospy.loginfo('Issuer node is ready!')
 
     def act(self, incoming):
         tempdir = gettempdir()
