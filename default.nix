@@ -5,7 +5,7 @@
 
 mkRosPackage rec {
   name = "${pname}-${version}";
-  pname = "renewable-enegry-agent";
+  pname = "issuing-service-agent";
   version = "master";
 
   src = ./.;
@@ -13,7 +13,7 @@ mkRosPackage rec {
   propagatedBuildInputs = [ robonomics_comm ];
 
   meta = with stdenv.lib; {
-    description = "Renewable enegery source agent for Sustainable Hackaton";
+    description = "Issuing service agent for the renewable energy source";
     homepage = http://github.com/vourhey/sustainable-city-hack;
     license = licenses.bsd3;
     maintainers = with maintainers; [ vourhey ];
