@@ -1,99 +1,120 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Standart, System and Third Party
-from ipfsapi import connect
-from tempfile import gettempdir
-import os
+# Standart, System and Third party
+from collections import namedtuple
+from queue import Queue
+from threading import Thread
+import json
 
 # ROS
 import rospy
-import rosbag
+from std_msgs.msg import String
 
-# Robonomics communication
-from robonomics_msgs.msg import Offer, Demand
-from ethereum_common.msg import Address, UInt256
-from ethereum_common.srv import Accounts, BlockNumber
-from ipfs_common.msg import Multihash
+# AIRA
+from robonomics_liability.msg import Liability
+from robonomics_liability.srv import StartLiability, FinishLiability
+
+# Web3
+from web3 import Web3, HTTPProvider
+from eth_keys import keys
 
 
 class IssuerNode:
 
+    liability_queue = Queue()
+    current_liability = None
+
     def __init__(self):
-        rospy.init_node('issuer')
-        rospy.loginfo('Launching issuer node...')
+        rospy.init_node("issuer")
+        rospy.loginfo("Launching issuer node...")
 
-        rospy.wait_for_service('/eth/current_block')
-        rospy.wait_for_service('/eth/accounts')
-        self.accounts = rospy.ServiceProxy('/eth/accounts', Accounts)()
-        rospy.loginfo(str(self.accounts))  # AIRA ethereum addresses
+        rospy.Subscriber('/liability/ready', Liability, self.on_new_liability)
+        rospy.Subscriber('next_liability', Liability, self.subscribe_and_start)
+        self.next_liability = rospy.Publisher('next_liability', Liability, queue_size=128)
 
-        rospy.Subscriber('/liability/infochan/incoming/demand',
-                         Demand, self.on_incoming_demand)
+        rospy.wait_for_service('liability/finish')
 
-        self.signing_offer = rospy.Publisher(
-            '/liability/infochan/eth/signing/offer', Offer, queue_size=128)
+        self.liability_proxy = namedtuple('liability_srvs_proxy', ['start', 'finish'])(
+                                          rospy.ServiceProxy('liability/start', StartLiability),
+                                          rospy.ServiceProxy('liability/finish', FinishLiability))
 
-        self.ipfs = connect('https://ipfs.infura.io', 5001)
+        web3_http_provider = rospy.get_param('~web3_http_provider')
+        http_provider = HTTPProvider(web3_http_provider)
+        self.web3 = Web3(http_provider)
+
+        self.energy_token_address = rospy.get_param("~energy_token")
+
+        self.emitter_contract = rospy.get_param("~emitter_contract")
+        self.emitter_contract_abi = json.loads(rospy.get_param("~emitter_contract_abi"))
+
+        word = rospy.get_param("~private_key").strip()
+        pk = keys.PrivateKey(Web3.toBytes(hexstr=word))
+        self.eth_address = pk.public_key.to_checksum_address()
+        self.private_key = pk.to_hex()
 
         rospy.loginfo('Issuer node is ready!')
 
-    def act(self, incoming):
-        tempdir = gettempdir()
-        os.chdir(tempdir)
+    def on_new_liability(self, msg):
+        self.liability_queue.put(msg)
+        rospy.loginfo("Got new liability %s", msg.address)
 
-        objective = incoming.objective.multihash
-        rospy.loginfo("Downloading objective: {}".format(objective))
-        self.ipfs.get(objective)
+    def _process_liability_queue(self):
+        while not rospy.is_shutdown() and self.current_liability is not None:
+            msg = self.liability_queue.get()
+            self.next_liability.publish(msg)
 
-        bag = rosbag.Bag(os.path.join(tempdir, objective))
-        for topic, msg, t in bag.read_messages(topics=['data']):
-            print("[{}]: {}".format(t, msg))
-            pass  # TODO TODO TODO
+    def subscribe_and_start(self, liability):
+        rospy.loginfo('Starting process...')
 
-        bag.close()
+        # Register any topics you need to publish logs, data etc
+        prefix = '/liability/eth_' + liability.address.address
+        pub_data = rospy.Publisher(prefix+'/data', String, queue_size=128)
+        pub_token = rospy.Publisher(prefix + '/token', String, queue_size=128)
+        pub_total_production = rospy.Publisher(prefix + '/total_production', String, queue_size=128)
+        pub_tx = rospy.Publisher(prefix + '/txhash', String, queue_size=128)
 
-        self.make_demand(incoming)
+        # Store every recieved row
+        def accumulate(row):
+            rospy.loginfo("New row: {}".format(row.data))
+            pub_data.publish(row)
 
-    def on_incoming_demand(self, incoming: Demand):
-        rospy.loginfo('Incoming demand %s...', str(incoming))
-        if (incoming.model.multihash == rospy.get_param('~model') and incoming.token.address == rospy.get_param('~token')):
-            rospy.loginfo('For my model and token!')
-            self.act(incoming)  # reactive strategy
-        else:
-            rospy.loginfo('Not fits my model or token, skip it.')
+            obj = json.loads(row.data)
+            self.last = obj['children'][0]['parameter'][1]['value']['doubleValue'] # exctract total_production
+        rospy.Subscriber(prefix + '/row', String, accumulate)
 
-    def make_deadline(self):
-        lifetime = int(rospy.get_param('~order_lifetime'))
-        deadline = rospy.ServiceProxy(
-            '/eth/current_block', BlockNumber)().number + lifetime
-        return str(deadline)
+        def complete(msg):
+            contract = self.web3.eth.contract(address=self.emitter_contract, abi=self.emitter_contract_abi)
+            nonce = self.web3.eth.getTransactionCount(self.eth_address)
 
-    def make_offer(self, incoming):
-        rospy.loginfo('Making offer...')
+            total_production = int(last * 1000)
+            pub_total_production.publish(String(data=str(total_production)))
 
-        offer = Offer()
-        offer.model = Multihash()
-        offer.model.multihash = rospy.get_param('~model')
-        offer.objective = incoming.objective
-        offer.token = Address()
-        offer.token.address = rospy.get_param('~token')
-        offer.cost = incoming.cost
-        offer.lighthouse = Address()
-        offer.lighthouse.address = rospy.get_param('~lighthouse')
-        offer.validator = Address()
-        offer.validator.address = rospy.get_param('~validator')
-        offer.lighthouseFee = UInt256()
-        offer.lighthouseFee.uint256 = '0'
-        offer.deadline = UInt256()
-        offer.deadline.uint256 = self.make_deadline()
+            transfer_txn = contract.functions.issueCertificate(liability.address.address, self.energy_token_address, total_production).buildTransaction({
+                'chainId': 4451,
+                'gas': 70000,
+                'gasPrice': self.web3.toWei('0', 'gwei'),
+                'nonce': nonce,
+            })
+            signed_txn = self.web3.eth.account.signTransaction(transfer_txn, self.private_key)
+            tx_hash = self.web3.eth.sendRawTransaction(signed_txn.rawTransaction)
 
-        self.signing_offer.publish(offer)
-        rospy.loginfo(offer)
+            print("Tx hash {}".format(tx_hash.hex()))
+            pub_tx.publish(String(data=tx_hash.hex()))
+
+            self.liability_proxy.finish(liability.address.address, True)
+            rospy.loginfo('Process complete.')
+            self.current_liability = None
+        rospy.Subscriber(prefix + '/finish', String, complete)
+
+        self.current_liability = liability
+        self.liability_proxy.start(liability.address.address)
 
     def spin(self):
+        Thread(target=self._process_liability_queue, daemon=True).start()
         rospy.spin()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     IssuerNode().spin()
+
