@@ -12,6 +12,7 @@ catkin_package()
 catkin_install_python(
     PROGRAMS
         scripts/issuer_node
+		scripts/checker_node
     DESTINATION
         ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

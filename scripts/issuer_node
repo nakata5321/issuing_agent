@@ -33,11 +33,11 @@ class IssuerNode:
         rospy.Subscriber('next_liability', Liability, self.subscribe_and_start)
         self.next_liability = rospy.Publisher('next_liability', Liability, queue_size=128)
 
-        rospy.wait_for_service('liability/finish')
+        rospy.wait_for_service('/liability/finish')
 
         self.liability_proxy = namedtuple('liability_srvs_proxy', ['start', 'finish'])(
-                                          rospy.ServiceProxy('liability/start', StartLiability),
-                                          rospy.ServiceProxy('liability/finish', FinishLiability))
+                                          rospy.ServiceProxy('/liability/start', StartLiability),
+                                          rospy.ServiceProxy('/liability/finish', FinishLiability))
 
         web3_http_provider = rospy.get_param('~web3_http_provider')
         http_provider = HTTPProvider(web3_http_provider)

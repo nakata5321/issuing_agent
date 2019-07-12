@@ -6,7 +6,7 @@
     <arg name="keyfile" default="" />
 
     <group ns="checker">
-        <node name="checker" pkg="issuing-service-agent" type="checker_node" output="screen">
+        <node name="checker" pkg="issuing_service_agent" type="checker_node" output="screen">
             <param name="lighthouse" value="0x202a09A451DE674d2d65Bf1C90968a8d8F72cf7b" />
             <param name="model" value="QmUB6ajZTLLMZg7re1v4hw44aoG8HDQDHr9JyujU264Aw2" />
             <param name="token" value="0x966EbbFD7ECbCF44b1e05341976e0652CFA01360" />
@@ -16,7 +16,7 @@
     </group>
 
     <group ns="issuer">
-        <node name="issuer" pkg="issuing-service-agent" type="issuer_node" output="screen">
+        <node name="issuer" pkg="issuing_service_agent" type="issuer_node" output="screen">
             <param name="web3_http_provider" value="$(arg web3_http_provider)" />
             <param name="private_key" textfile="$(arg keyfile)" />
             <param name="energy_token" value="$(arg energy_token)" />
