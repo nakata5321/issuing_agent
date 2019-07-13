@@ -2,10 +2,10 @@ pragma solidity ^0.5.0;
 
 import './interfaces/ILiability.sol';
 import './interfaces/IEmitent.sol';
-import '../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol';
+import '../node_modules/openzeppelin-solidity/contracts/access/roles/WhitelistedRole.sol';
 import './EnergyToken.sol';
 
-contract Emitter is Ownable, IEmitter {
+contract Emitter is WhitelistedRole, IEmitter {
     /**
      * @dev Green certificate
      */
@@ -19,7 +19,7 @@ contract Emitter is Ownable, IEmitter {
      */
     mapping(address => Certificate) public certificates;
 
-    function issueCertificate(address liability, address token, uint256 value) external onlyOwner {
+    function issueCertificate(address liability, address token, uint256 value) external onlyWhitelisted {
         require(certificates[liability].value == 0);
         certificates[liability].token = token;
         certificates[liability].value = value;
