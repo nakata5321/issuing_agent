@@ -1,8 +1,8 @@
 <launch>
     <arg name="web3_http_provider" default="https://sidechain.aira.life/rpc" />
-    <arg name="emitter_contract" default="0x0204Dc3285C9BFF9fE3C3f5Cb952D50E04B0d943" />
-    <arg name="validator" default="0x4e7DA04e493A63d4A294E359618207454Aa5b242" />
-    <arg name="energy_token" default="0x66E19F0121e69b79679cb8D63E0d65b9324846C7" />
+    <arg name="emitter_contract" default="0x4FB0F7E2B30eF473A6Bda61269b2032B745d3050" />
+    <arg name="validator" default="0x96f2AFE0Dd16393dF8E9Ccb8864F40eD0159956d" />
+    <arg name="energy_token" default="0x94B849744C840EC7304e47161821d64F66Dc0232" />
     <arg name="keyfile" default="" />
 
     <group ns="checker">

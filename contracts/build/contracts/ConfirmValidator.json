@@ -777,12 +777,12 @@
     "4451": {
       "events": {},
       "links": {},
-      "address": "0x4e7DA04e493A63d4A294E359618207454Aa5b242",
-      "transactionHash": "0xde1b83aa04f6009b39b48089cdd7eb991f6d637177ecc129a64ad87e1a24eb43"
+      "address": "0x96f2AFE0Dd16393dF8E9Ccb8864F40eD0159956d",
+      "transactionHash": "0xd0b5d7b034554d6c52747ad69676cdf299eb0d7dfb53bcac381600b7791f43fc"
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-12T17:25:40.383Z",
+  "updatedAt": "2019-07-13T14:17:55.821Z",
   "devdoc": {
     "methods": {}
   },

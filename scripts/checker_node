@@ -3,7 +3,7 @@
 
 # Standart, System and Third Party
 from ipfsapi import connect
-from tempfile import gettempdir
+from tempfile import gettempdir, NamedTemporaryFile
 import os
 
 # ROS
@@ -14,7 +14,8 @@ import rosbag
 from robonomics_msgs.msg import Offer, Demand
 from ethereum_common.msg import Address, UInt256
 from ethereum_common.srv import Accounts, BlockNumber
-from ipfs_common.msg import Multihash
+from ipfs_common.msg import Multihash, Filepath
+from ipfs_common.srv import IpfsDownloadFile, IpfsDownloadFileRequest, IpfsDownloadFileResponse
 
 
 class CheckerNode:
@@ -34,29 +35,35 @@ class CheckerNode:
         self.signing_offer = rospy.Publisher(
             '/liability/infochan/eth/signing/offer', Offer, queue_size=128)
 
-        self.ipfs = connect('https://ipfs.infura.io', 5001)
-
         rospy.loginfo('Checker node is ready!')
 
     def act(self, incoming):
         tempdir = gettempdir()
         os.chdir(tempdir)
 
-        objective = incoming.objective.multihash
+        temp_obj = NamedTemporaryFile(delete=False)
+
+        objective = incoming.objective
         rospy.loginfo("Downloading objective: {}".format(objective))
-        self.ipfs.get(objective)
+        rospy.wait_for_service('/ipfs/get_file')
+        get_file = rospy.ServiceProxy('/ipfs/get_file', IpfsDownloadFile)
 
-        rospy.loginfo("Checking objective's data...")
-        bag = rosbag.Bag(os.path.join(tempdir, objective))
-        for topic, msg, t in bag.read_messages(topics=['data']):
-            print("[{}]: {}".format(t, msg))
-            pass  # TODO TODO TODO
+        response = get_file(IpfsDownloadFileRequest(ipfs_address=objective, file=Filepath(temp_obj.name)))
 
-        bag.close()
+        if response.success:
+            rospy.loginfo("Checking objective's data...")
+            bag = rosbag.Bag(temp_obj.name)
+            for topic, msg, t in bag.read_messages(topics=['/row']):
+                print("[{}]: {}".format(t, msg))
+                pass  # TODO TODO TODO
 
-        rospy.loginfo("Looks good! Publishing a demand message")
+            bag.close()
 
-        self.make_demand(incoming)
+            rospy.loginfo("Looks good! Publishing a demand message")
+
+            self.make_offer(incoming)
+        else:
+            rospy.logerr("Error while downloading objective!")
 
     def on_incoming_demand(self, incoming: Demand):
         rospy.loginfo('Incoming demand %s...', str(incoming))
