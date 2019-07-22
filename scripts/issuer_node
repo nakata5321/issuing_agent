@@ -84,6 +84,13 @@ class IssuerNode:
             obj = json.loads(row.data)
             self.last = obj['children'][0]['parameter'][1]['value']['doubleValue'] # exctract total_production
         rospy.Subscriber(prefix + '/row', String, accumulate)
+        def time_start(ts):
+            self.time_start = ts.data
+        rospy.Subscriber(prefix + '/time_start', String, time_start)
+
+        def time_end(te):
+            self.time_end = te.data
+        rospy.Subscriber(prefix + '/time_end', String, time_end)
 
         def complete(msg):
             rospy.loginfo("Finishing work...")
@@ -93,7 +100,9 @@ class IssuerNode:
             total_production = int(self.last * 1000)
             pub_total_production.publish(String(data=str(total_production)))
             pub_token.publish(String(data=self.energy_token_address))
-            pub_period.publish(String(data="from 10th of June to 13th of July"))
+
+            timestamp = "from {} to {}".format(self.time_start, self.time_end)
+            pub_period.publish(String(data=timestamp))
 
             rospy.loginfo("Sending transaction with args: l {}, t {}, a {}".format(liability.address.address, self.energy_token_address, total_production))
 
