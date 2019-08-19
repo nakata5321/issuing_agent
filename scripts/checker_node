@@ -5,6 +5,7 @@
 from ipfsapi import connect
 from tempfile import gettempdir, NamedTemporaryFile
 import os
+import json
 
 # ROS
 import rospy
@@ -16,7 +17,21 @@ from ethereum_common.msg import Address, UInt256
 from ethereum_common.srv import Accounts, BlockNumber
 from ipfs_common.msg import Multihash, Filepath
 from ipfs_common.srv import IpfsDownloadFile, IpfsDownloadFileRequest, IpfsDownloadFileResponse
-from ipfs_common.bag import ipfs_download
+from rosbag import Bag
+# from ipfs_common.bag import ipfs_download
+
+def ipfs_download(multihash):
+    print("In my ipfs_download")
+    rospy.wait_for_service('/ipfs/get_file')
+    download = rospy.ServiceProxy('/ipfs/get_file', IpfsDownloadFile)
+    with NamedTemporaryFile(delete=False) as tmpfile:
+        res = download(multihash, Filepath(tmpfile.name))
+        if not res.success:
+            raise Exception(res.error_msg)
+        messages = {}
+        for topic, msg, timestamp in Bag(tmpfile.name, 'r').read_messages():
+            messages[topic] = msg
+        return messages
 
 
 class CheckerNode:
@@ -41,11 +56,13 @@ class CheckerNode:
     def act(self, incoming):
         objective_bag = ipfs_download(incoming.objective)
 
-        log_data = self.extract_log(objective_bag['/log'])
+        log_data = self.extract_log(objective_bag['/log'].data)
 
+        ''' CHECK THE LOG FILE
         for row in log_data["rows"]:
             rospy.loginfo("Checking '{}'".format(row))
             pass # TODO
+        '''
 
         rospy.loginfo("Looks good! Publishing a demand message")
         self.make_offer(incoming)
