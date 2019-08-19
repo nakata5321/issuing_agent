@@ -65,63 +65,71 @@ class IssuerNode:
             msg = self.liability_queue.get()
             self.next_liability.publish(msg)
 
+    def parse_log(self, log):
+        rospy.loginfo("Parse log...")
+        pub_data.publish(log)
+
+        obj = json.loads(log)
+
+        # extract total production
+        total = self._extract_total_production(obj)
+
+        # find start and end time stamps
+        self._extract_period(obj)
+
+        # send a transaction to the Emitter
+        self._send_tx(total)
+
+        self.liability_proxy.finish(liability.address.address, True)
+        rospy.loginfo('Process complete.')
+        self.current_liability = None
+
+    def _extract_total_production(self, obj):
+        total_production = obj["total_production"]
+        rospy.loginfo("Total production: {} MWh".format(total_production))
+        self.pub_total_production.publish(String(data=str(total_production)))
+        return int(total_production * 1000) # convert to kWh
+
+    def _extract_period(self, obj):
+        rows = obj["rows"]
+        start_ts = rows[0]["timestamp"]
+        end_ts = rows[-1]["timestamp"]
+        period = "c {} по {}".format(start_ts, end_ts)
+        rospy.loginfo(period)
+        self.pub_period.publish(String(data=period))
+
+    def _send_tx(self, total):
+        pub_token.publish(String(data=self.energy_token_address))
+
+        contract = self.web3.eth.contract(address=self.emitter_contract, abi=self.emitter_contract_abi)
+        nonce = self.web3.eth.getTransactionCount(self.eth_address)
+
+        rospy.loginfo("Sending transaction with args: l {}, t {}, a {}".format(self.current_liability.address.address, self.energy_token_address, total))
+
+        transfer_txn = contract.functions.issueCertificate(self.current_liability.address.address, self.energy_token_address, total).buildTransaction({
+            'chainId': 4451,
+            'gas': 70000,
+            'gasPrice': self.web3.toWei('0', 'gwei'),
+            'nonce': nonce,
+        })
+        signed_txn = self.web3.eth.account.signTransaction(transfer_txn, self.private_key)
+        tx_hash = self.web3.eth.sendRawTransaction(signed_txn.rawTransaction)
+
+        rospy.loginfo("Tx hash {}".format(tx_hash.hex()))
+        pub_tx.publish(String(data=tx_hash.hex()))
+
     def subscribe_and_start(self, liability):
         rospy.loginfo('Starting process...')
 
         # Register any topics you need to publish logs, data etc
         prefix = '/liability/eth_' + liability.address.address
-        pub_data = rospy.Publisher(prefix+'/data', String, queue_size=128)
-        pub_token = rospy.Publisher(prefix + '/token', String, queue_size=128)
-        pub_total_production = rospy.Publisher(prefix + '/total_production', String, queue_size=128)
-        pub_tx = rospy.Publisher(prefix + '/txhash', String, queue_size=128)
-        pub_period = rospy.Publisher(prefix + '/period', String, queue_size=128)
+        self.pub_data = rospy.Publisher(prefix+'/data', String, queue_size=128)
+        self.pub_token = rospy.Publisher(prefix + '/token', String, queue_size=128)
+        self.pub_total_production = rospy.Publisher(prefix + '/total_production', String, queue_size=128)
+        self.pub_tx = rospy.Publisher(prefix + '/txhash', String, queue_size=128)
+        self.pub_period = rospy.Publisher(prefix + '/period', String, queue_size=128)
 
-        # Store every recieved row
-        def accumulate(row):
-            rospy.loginfo("New row: {}".format(row.data))
-            pub_data.publish(row)
-
-            obj = json.loads(row.data)
-            self.last = obj['children'][0]['parameter'][1]['value']['doubleValue'] # exctract total_production
-        rospy.Subscriber(prefix + '/row', String, accumulate)
-        def time_start(ts):
-            self.time_start = ts.data
-        rospy.Subscriber(prefix + '/time_start', String, time_start)
-
-        def time_end(te):
-            self.time_end = te.data
-        rospy.Subscriber(prefix + '/time_end', String, time_end)
-
-        def complete(msg):
-            rospy.loginfo("Finishing work...")
-            contract = self.web3.eth.contract(address=self.emitter_contract, abi=self.emitter_contract_abi)
-            nonce = self.web3.eth.getTransactionCount(self.eth_address)
-
-            total_production = int(self.last * 1000)
-            pub_total_production.publish(String(data=str(total_production)))
-            pub_token.publish(String(data=self.energy_token_address))
-
-            timestamp = "from {} to {}".format(self.time_start, self.time_end)
-            pub_period.publish(String(data=timestamp))
-
-            rospy.loginfo("Sending transaction with args: l {}, t {}, a {}".format(liability.address.address, self.energy_token_address, total_production))
-
-            transfer_txn = contract.functions.issueCertificate(liability.address.address, self.energy_token_address, total_production).buildTransaction({
-                'chainId': 4451,
-                'gas': 70000,
-                'gasPrice': self.web3.toWei('0', 'gwei'),
-                'nonce': nonce,
-            })
-            signed_txn = self.web3.eth.account.signTransaction(transfer_txn, self.private_key)
-            tx_hash = self.web3.eth.sendRawTransaction(signed_txn.rawTransaction)
-
-            rospy.loginfo("Tx hash {}".format(tx_hash.hex()))
-            pub_tx.publish(String(data=tx_hash.hex()))
-
-            self.liability_proxy.finish(liability.address.address, True)
-            rospy.loginfo('Process complete.')
-            self.current_liability = None
-        rospy.Subscriber(prefix + '/finish', String, complete)
+        rospy.Subscriber(prefix + '/log', String, self.parse_log)
 
         self.current_liability = liability
         self.liability_proxy.start(liability.address.address)
