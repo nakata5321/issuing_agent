@@ -22,16 +22,22 @@ from rosbag import Bag
 
 def ipfs_download(multihash):
     print("In my ipfs_download")
+
+    tempdir = gettempdir()
+    os.chdir(tempdir)
+
+    temp_obj = NamedTemporaryFile(delete=False)
+
     rospy.wait_for_service('/ipfs/get_file')
-    download = rospy.ServiceProxy('/ipfs/get_file', IpfsDownloadFile)
-    with NamedTemporaryFile(delete=False) as tmpfile:
-        res = download(multihash, Filepath(tmpfile.name))
-        if not res.success:
-            raise Exception(res.error_msg)
-        messages = {}
-        for topic, msg, timestamp in Bag(tmpfile.name, 'r').read_messages():
-            messages[topic] = msg
-        return messages
+    get_file = rospy.ServiceProxy('/ipfs/get_file', IpfsDownloadFile)
+
+    res = get_file(IpfsDownloadFileRequest(ipfs_address=multihash, file=Filepath(temp_obj.name)))
+    if not res.success:
+        raise Exception(res.error_msg)
+    messages = {}
+    for topic, msg, timestamp in Bag(temp_obj.name, 'r').read_messages():
+        messages[topic] = msg
+    return messages
 
 
 class CheckerNode:
