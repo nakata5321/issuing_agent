@@ -1,0 +1,169 @@
+{
+    "id": "601",
+    "name": "solar_panel",
+    "rows": [
+        {
+            "type": "double",
+            "value": 0.349,
+            "unit": "kWh",
+            "timestamp": "2019-07-02 15:00:38.222926+00"
+        },
+        {
+            "type": "double",
+            "value": 0.0,
+            "unit": "kWh",
+            "timestamp": "2019-07-03 15:14:12.328136+00"
+        },
+        {
+            "type": "double",
+            "value": 8.47,
+            "unit": "kWh",
+            "timestamp": "2019-07-04 15:18:42.463975+00"
+        },
+        {
+            "type": "double",
+            "value": 10.45,
+            "unit": "kWh",
+            "timestamp": "2019-07-05 15:23:14.792065+00"
+        },
+        {
+            "type": "double",
+            "value": 0.436,
+            "unit": "kWh",
+            "timestamp": "2019-07-06 15:27:27.529805+00"
+        },
+        {
+            "type": "double",
+            "value": 0.394,
+            "unit": "kWh",
+            "timestamp": "2019-07-07 15:34:02.770869+00"
+        },
+        {
+            "type": "double",
+            "value": 0.989,
+            "unit": "kWh",
+            "timestamp": "2019-07-08 15:38:21.887621+00"
+        },
+        {
+            "type": "double",
+            "value": 0.005,
+            "unit": "kWh",
+            "timestamp": "2019-07-09 15:44:51.088245+00"
+        },
+        {
+            "type": "double",
+            "value": 1.23,
+            "unit": "kWh",
+            "timestamp": "2019-07-10 15:53:06.654446+00"
+        },
+        {
+            "type": "double",
+            "value": 15.08,
+            "unit": "kWh",
+            "timestamp": "2019-07-11 15:57:24.518743+00"
+        },
+        {
+            "type": "double",
+            "value": 0.15,
+            "unit": "kWh",
+            "timestamp": "2019-07-12 16:01:46.241905+00"
+        },
+        {
+            "type": "double",
+            "value": 18.81,
+            "unit": "kWh",
+            "timestamp": "2019-07-13 16:06:03.706171+00"
+        },
+        {
+            "type": "double",
+            "value": 5.21,
+            "unit": "kWh",
+            "timestamp": "2019-07-14 16:10:18.919423+00"
+        },
+        {
+            "type": "double",
+            "value": 0.27,
+            "unit": "kWh",
+            "timestamp": "2019-07-15 16:14:48.612268+00"
+        },
+        {
+            "type": "double",
+            "value": 0.041,
+            "unit": "kWh",
+            "timestamp": "2019-07-16 16:19:07.190213+00"
+        },
+        {
+            "type": "double",
+            "value": 0.0,
+            "unit": "kWh",
+            "timestamp": "2019-07-17 16:24:42.820684+00"
+        },
+        {
+            "type": "double",
+            "value": 21.03,
+            "unit": "kWh",
+            "timestamp": "2019-07-18 16:31:55.51613+00"
+        },
+        {
+            "type": "double",
+            "value": 7.23,
+            "unit": "kWh",
+            "timestamp": "2019-07-19 16:36:55.303337+00"
+        },
+        {
+            "type": "double",
+            "value": 0.013,
+            "unit": "kWh",
+            "timestamp": "2019-07-20 16:42:15.877842+00"
+        },
+        {
+            "type": "double",
+            "value": 18.41,
+            "unit": "kWh",
+            "timestamp": "2019-07-21 16:46:45.542692+00"
+        },
+        {
+            "type": "double",
+            "value": 26.83,
+            "unit": "kWh",
+            "timestamp": "2019-07-22 16:51:07.810976+00"
+        },
+        {
+            "type": "double",
+            "value": 0.723,
+            "unit": "kWh",
+            "timestamp": "2019-07-23 16:55:39.112343+00"
+        },
+        {
+            "type": "double",
+            "value": 0.32,
+            "unit": "kWh",
+            "timestamp": "2019-07-24 17:00:05.438565+00"
+        },
+        {
+            "type": "double",
+            "value": 0.0,
+            "unit": "kWh",
+            "timestamp": "2019-07-25 17:05:30.630984+00"
+        },
+        {
+            "type": "double",
+            "value": 0.194,
+            "unit": "kWh",
+            "timestamp": "2019-07-26 17:09:56.125592+00"
+        },
+        {
+            "type": "double",
+            "value": 7.11,
+            "unit": "kWh",
+            "timestamp": "2019-07-27 17:14:50.88112+00"
+        },
+        {
+            "type": "double",
+            "value": 29.98,
+            "unit": "kWh",
+            "timestamp": "2019-07-28 17:19:14.899955+00"
+        }
+    ],
+    "total_production": 173.724
+}
