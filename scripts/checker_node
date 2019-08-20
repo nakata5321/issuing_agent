@@ -6,6 +6,7 @@ from ipfsapi import connect
 from tempfile import gettempdir, NamedTemporaryFile
 import os
 import json
+from shutil import move
 
 # ROS
 import rospy
@@ -20,20 +21,41 @@ from ipfs_common.srv import IpfsDownloadFile, IpfsDownloadFileRequest, IpfsDownl
 from rosbag import Bag
 # from ipfs_common.bag import ipfs_download
 
-def ipfs_download(multihash):
-    print("In my ipfs_download")
+def ipfs_download_file(ipfs_client, multihash, filepath):
+    file_dst = filepath
+    dst_dir, dst_file = os.path.split(file_dst)
 
+    if not os.path.isdir(dst_dir):
+        try:
+            os.mkdir(dst_dir)
+        except Exception as e:
+            rospy.logerr("Directory %s does not exists and cannot be created: %s", e)
+            return False
+
+    if os.path.isdir(file_dst):
+        rospy.logwarn(
+            "Collision between existed directory and IPFS downloading file destination \"%s\". Please fix it manually.",
+            file_dst)
+        return False
+
+    try:
+        tempdir = gettempdir()
+        os.chdir(tempdir)
+        ipfs_client.get(multihash)
+        move(tempdir + os.path.sep + multihash, file_dst)
+    except Exception as e:
+        rospy.logerr("Failed to download %s to %s with exception: %s", multihash, file_dst, e)
+    return True
+
+def ipfs_download(multihash):
     tempdir = gettempdir()
     os.chdir(tempdir)
 
     temp_obj = NamedTemporaryFile(delete=False)
 
-    rospy.wait_for_service('/ipfs/get_file')
-    get_file = rospy.ServiceProxy('/ipfs/get_file', IpfsDownloadFile)
-
-    res = get_file(IpfsDownloadFileRequest(ipfs_address=multihash, file=Filepath(temp_obj.name)))
-    if not res.success:
-        raise Exception(res.error_msg)
+    res = ipfs_download_file(connect(), multihash.multihash, temp_obj.name)
+    if not res:
+        raise Exception("Can't download objective")
     messages = {}
     for topic, msg, timestamp in Bag(temp_obj.name, 'r').read_messages():
         messages[topic] = msg
@@ -63,6 +85,7 @@ class CheckerNode:
         objective_bag = ipfs_download(incoming.objective)
 
         log_data = self.extract_log(objective_bag['/log'].data)
+        rospy.loginfo("Logdata {}".format(log_data))
 
         ''' CHECK THE LOG FILE
         for row in log_data["rows"]:
