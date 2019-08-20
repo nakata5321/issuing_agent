@@ -33,7 +33,19 @@ Parameters:
 
 * `web3_http_provider` - the address of Web3 RPC
 * `emitter_contract` - the address of the emitter smart contract
-* `private_key` - a string that indicates a private key of the sender (the address of CPS) 
+* `private_key` - a string that indicates a private key of the sender (the address of CPS)
+
+Result message contains the following topics:
+
+* `/liability/eth_<liability_address>/data` - contains the same log as in `/log` topic
+* `/liability/eth_<liability_address>/period_start` - the beginning of measurement
+* `/liability/eth_<liability_address>/period_end` - the ending of measurement
+* `/liability/eth_<liability_address>/token` - the address of the token in Ethereum
+* `/liability/eth_<liability_address>/total_production` - the amount of produced energy
+* `/liability/eth_<liability_address>/unit` - the unit of energy
+* `/liability/eth_<liability_address>/txhash` - the hash of sent transaction
+
+Every topic's type is `std_msgs/String`
 
 ## Build
 
@@ -47,7 +59,7 @@ To deploy smart contracts (requires truffle):
 
 ```
 cd contracts
-truffle deploy 
+truffle deploy
 ```
 
 ## Run

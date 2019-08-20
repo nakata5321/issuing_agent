@@ -95,9 +95,10 @@ class IssuerNode:
 
     def _extract_total_production(self, obj):
         total_production = obj["total_production"]
-        rospy.loginfo("Total production: {} MWh".format(total_production))
+        unit = obj["rows"][0]["unit"]
+        rospy.loginfo("Total production: {} {}".format(total_production, unit))
         self.pub_total_production.publish(String(data=str(total_production)))
-        return int(total_production * 1000) # convert to kWh
+        return int(total_production) # convert to kWh
 
     def _extract_period(self, obj):
         rows = obj["rows"]
@@ -105,7 +106,8 @@ class IssuerNode:
         end_ts = rows[-1]["timestamp"]
         period = "c {} по {}".format(start_ts, end_ts)
         rospy.loginfo(period)
-        self.pub_period.publish(String(data=period))
+        self.pub_period_start.publish(String(data=start_ts))
+        self.pub_period_end.publish(String(data=end_ts))
 
     def _send_tx(self, total):
         self.pub_token.publish(String(data=self.energy_token_address))
@@ -136,10 +138,10 @@ class IssuerNode:
         self.pub_token = rospy.Publisher(prefix + '/token', String, queue_size=128)
         self.pub_total_production = rospy.Publisher(prefix + '/total_production', String, queue_size=128)
         self.pub_tx = rospy.Publisher(prefix + '/txhash', String, queue_size=128)
-        self.pub_period = rospy.Publisher(prefix + '/period', String, queue_size=128)
+        self.pub_period_start = rospy.Publisher(prefix + '/period_start', String, queue_size=128)
+        self.pub_period_end = rospy.Publisher(prefix + '/period_end', String, queue_size=128)
 
-        well = rospy.Subscriber(prefix + '/log', String, self.parse_log)
-        print(well)
+        self.sub_log = rospy.Subscriber(prefix + '/log', String, self.parse_log)
 
         self.current_liability = liability
         self.liability_proxy.start(liability.address.address)
@@ -149,7 +151,9 @@ class IssuerNode:
         self.pub_token.unregister()
         self.pub_total_production.unregister()
         self.pub_tx.unregister()
-        self.pub_period.unregister()
+        self.pub_period_start.unregister()
+        self.pub_period_end.unregister()
+        self.sub_log.unregister()
 
     def spin(self):
         Thread(target=self._process_liability_queue, daemon=True).start()
