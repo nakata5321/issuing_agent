@@ -47,19 +47,25 @@ Result message contains the following topics:
 
 Every topic's type is `std_msgs/String`
 
+## Smart Contracts
+
+During its work the issuer node sends a transaction to a smart contract by address `emitter_contract`.
+
+There are all the necessary contracts deployed to sidechain network, but the easiest way to create a new set of contracts is:
+
+```
+cd contracts
+truffle deploy
+```
+
+For more information look at the [README.md](contracts/README.md) file in contracts folder.
+
 ## Build
 
 To build the package run:
 
 ```
 nix build -f release.nix
-```
-
-To deploy smart contracts (requires truffle):
-
-```
-cd contracts
-truffle deploy
 ```
 
 ## Run

@@ -98,6 +98,7 @@ class IssuerNode:
         unit = obj["rows"][0]["unit"]
         rospy.loginfo("Total production: {} {}".format(total_production, unit))
         self.pub_total_production.publish(String(data=str(total_production)))
+        self.pub_unit.publish(String(unit))
         return int(total_production) # convert to kWh
 
     def _extract_period(self, obj):
@@ -140,6 +141,7 @@ class IssuerNode:
         self.pub_tx = rospy.Publisher(prefix + '/txhash', String, queue_size=128)
         self.pub_period_start = rospy.Publisher(prefix + '/period_start', String, queue_size=128)
         self.pub_period_end = rospy.Publisher(prefix + '/period_end', String, queue_size=128)
+        self.pub_unit = rospy.Publisher(prefix + '/unit', String, queue_size=128)
 
         self.sub_log = rospy.Subscriber(prefix + '/log', String, self.parse_log)
 
@@ -153,6 +155,7 @@ class IssuerNode:
         self.pub_tx.unregister()
         self.pub_period_start.unregister()
         self.pub_period_end.unregister()
+        self.pub_unit.unregister()
         self.sub_log.unregister()
 
     def spin(self):
