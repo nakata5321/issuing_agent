@@ -18,7 +18,7 @@ from ethereum_common.srv import Accounts, BlockNumber
 from ipfs_common.msg import Multihash, Filepath
 from ipfs_common.srv import IpfsDownloadFile, IpfsDownloadFileRequest, IpfsDownloadFileResponse
 from rosbag import Bag
-from issuing_service_agent.ipfs_utils import ipfs_download, ipfs_download_file
+from issuing_service_agent.ipfs_utils import ipfs_download, ipfs_download_txt_file
 
 
 class CheckerNode:
@@ -58,13 +58,8 @@ class CheckerNode:
     def extract_log(self, ipfs_hash):
         rospy.loginfo("Downloading log: {}".format(ipfs_hash))
 
-        temp_log = NamedTemporaryFile(delete=False)
-
-        res = ipfs_download_file(connect(), ipfs_hash, temp_log.name)
-
-        if res:
-            with open(temp_log.name, 'r') as f:
-                return json.loads(f.read())
+        res = ipfs_download_txt_file(ipfs_hash)
+        return json.loads(res)
 
         # TODO raise exception
 

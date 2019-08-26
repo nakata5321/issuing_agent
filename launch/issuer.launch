@@ -1,14 +1,13 @@
 <launch>
     <arg name="web3_http_provider" default="https://sidechain.aira.life/rpc" />
-    <arg name="emitter_contract" default="0x4FB0F7E2B30eF473A6Bda61269b2032B745d3050" />
-    <arg name="validator" default="0x96f2AFE0Dd16393dF8E9Ccb8864F40eD0159956d" />
-    <arg name="energy_token" default="0x94B849744C840EC7304e47161821d64F66Dc0232" />
+    <arg name="emitter_contract" default="0x4b255d6E57409232F7C29759D5699dabE66f8Cd5" />
+    <arg name="validator" default="0x8a919cC91bA1ac88BF5FdCeb116c35f7Dc1Ed179" />
     <arg name="keyfile" default="" />
 
     <group ns="checker">
         <node name="checker" pkg="issuing_service_agent" type="checker_node" output="screen">
             <param name="lighthouse" value="0x202a09A451DE674d2d65Bf1C90968a8d8F72cf7b" />
-            <param name="model" value="QmYVEPMfzSf2GXhA2heLrnhr931xmnXBEfy79Zrk9Aeskr" />
+            <param name="model" value="QmfK3LyEPLoYJCKXate1PceGLBNBaodwqcV9XirwHZFbsc" />
             <param name="token" value="0x966EbbFD7ECbCF44b1e05341976e0652CFA01360" />
             <param name="validator" value="$(arg validator)" />
             <param name="order_lifetime" value="100" />
@@ -19,7 +18,6 @@
         <node name="issuer" pkg="issuing_service_agent" type="issuer_node" output="screen">
             <param name="web3_http_provider" value="$(arg web3_http_provider)" />
             <param name="private_key" textfile="$(arg keyfile)" />
-            <param name="energy_token" value="$(arg energy_token)" />
             <param name="emitter_contract" value="$(arg emitter_contract)" />
             <param name="emitter_contract_abi" textfile="$(find issuing_service_agent)/abi/emitter.json" />
         </node>

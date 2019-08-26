@@ -46,8 +46,6 @@ class IssuerNode:
         http_provider = HTTPProvider(web3_http_provider)
         self.web3 = Web3(http_provider)
 
-        self.energy_token_address = rospy.get_param("~energy_token")
-
         self.emitter_contract = rospy.get_param("~emitter_contract")
         self.emitter_contract_abi = json.loads(rospy.get_param("~emitter_contract_abi"))
 

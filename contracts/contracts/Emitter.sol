@@ -22,7 +22,7 @@ contract Emitter is WhitelistedRole, IEmitter {
     mapping(address => Certificate) public certificates;
 
     function issueCertificate(address liability, uint256 value) external onlyWhitelisted {
-        // require(certificates[liability].value == 0);
+        require(certificates[liability].value == 0);
 
         EnergyToken et = new EnergyToken();
 
@@ -33,7 +33,7 @@ contract Emitter is WhitelistedRole, IEmitter {
 
     function claimCertificate(address liability) external {
         require(certificates[liability].value > 0);
-        // require(ILiability(liability).isFinalized());
+        require(ILiability(liability).isFinalized());
 
         EnergyToken _token = EnergyToken(certificates[liability].token);
         _token.mint(msg.sender, certificates[liability].value);
