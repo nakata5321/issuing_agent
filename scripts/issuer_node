@@ -6,8 +6,6 @@ from collections import namedtuple
 from queue import Queue
 from threading import Thread
 import json
-from ipfsapi import connect
-from tempfile import gettempdir, NamedTemporaryFile
 
 # ROS
 import rospy
