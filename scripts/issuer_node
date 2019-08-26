@@ -128,7 +128,9 @@ class IssuerNode:
             rospy.sleep(1)
             receipt = self.web3.eth.getTransactionReceipt(tx_hash.hex())
 
-        self.pub_token.publish(String(data=str(receipt.logs[0].address)))
+        token_address = receipt.logs[0].address
+        rospy.loginfo("Token address: {}".format(token_address))
+        self.pub_token.publish(String(data=str(token_address)))
 
         self.pub_tx.publish(String(data=tx_hash.hex()))
 
