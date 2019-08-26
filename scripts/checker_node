@@ -94,8 +94,12 @@ class CheckerNode:
         offer.cost = incoming.cost
         offer.lighthouse = Address()
         offer.lighthouse.address = rospy.get_param('~lighthouse')
-        offer.validator = Address()
-        offer.validator.address = rospy.get_param('~validator')
+
+        if incoming.validator.address == '0x0000000000000000000000000000000000000000':
+            offer.validator = incoming.validator
+        else:
+            offer.validator = Address(rospy.get_param('~validator'))
+
         offer.lighthouseFee = UInt256()
         offer.lighthouseFee.uint256 = '0'
         offer.deadline = UInt256()
