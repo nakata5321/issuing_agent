@@ -6,13 +6,11 @@ from collections import namedtuple
 from queue import Queue
 from threading import Thread
 import json
-from ipfsapi import connect
-from tempfile import gettempdir, NamedTemporaryFile
 
 # ROS
 import rospy
 from std_msgs.msg import String
-from issuing_service_agent.ipfs_utils import ipfs_download_file
+from issuing_service_agent.ipfs_utils import ipfs_download_txt_file
 
 # AIRA
 from robonomics_liability.msg import Liability
@@ -46,8 +44,6 @@ class IssuerNode:
         http_provider = HTTPProvider(web3_http_provider)
         self.web3 = Web3(http_provider)
 
-        self.energy_token_address = rospy.get_param("~energy_token")
-
         self.emitter_contract = rospy.get_param("~emitter_contract")
         self.emitter_contract_abi = json.loads(rospy.get_param("~emitter_contract_abi"))
 
@@ -70,32 +66,30 @@ class IssuerNode:
 
     def parse_log(self, log):
         rospy.loginfo("Parse log {}...".format(log.data))
-        self.pub_data.publish(log)
+        # self.pub_data.publish(log)
 
-        temp_log = NamedTemporaryFile(delete=False)
-        ipfs_download_file(connect(), log.data, temp_log.name)
+        data = ipfs_download_txt_file(log.data)
+        obj = json.loads(data)
 
-        with open(temp_log.name, 'r') as f:
-            obj = json.loads(f.read())
+        # extract total production
+        total = self._extract_total_production(obj)
 
-            # extract total production
-            total = self._extract_total_production(obj)
+        # find start and end time stamps
+        self._extract_period(obj)
 
-            # find start and end time stamps
-            self._extract_period(obj)
+        # send a transaction to the Emitter
+        self._send_tx(total)
 
-            # send a transaction to the Emitter
-            self._send_tx(total)
+        self.liability_proxy.finish(self.current_liability.address.address, True)
 
-            self.liability_proxy.finish(self.current_liability.address.address, True)
-
-            self.unregister_all()
-            rospy.loginfo('Process complete.')
-            self.current_liability = None
+        self.unregister_all()
+        rospy.loginfo('Process complete.')
+        self.current_liability = None
 
     def _extract_total_production(self, obj):
         total_production = obj["total_production"]
         unit = obj["rows"][0]["unit"]
+
         rospy.loginfo("Total production: {} {}".format(total_production, unit))
         self.pub_total_production.publish(String(data=str(total_production)))
         self.pub_unit.publish(String(unit))
@@ -105,29 +99,37 @@ class IssuerNode:
         rows = obj["rows"]
         start_ts = rows[0]["timestamp"]
         end_ts = rows[-1]["timestamp"]
-        period = "c {} по {}".format(start_ts, end_ts)
+        period = "from {} to {}".format(start_ts, end_ts)
         rospy.loginfo(period)
         self.pub_period_start.publish(String(data=start_ts))
         self.pub_period_end.publish(String(data=end_ts))
 
     def _send_tx(self, total):
-        self.pub_token.publish(String(data=self.energy_token_address))
-
         contract = self.web3.eth.contract(address=self.emitter_contract, abi=self.emitter_contract_abi)
         nonce = self.web3.eth.getTransactionCount(self.eth_address)
 
-        rospy.loginfo("Sending transaction with args: l {}, t {}, a {}".format(self.current_liability.address.address, self.energy_token_address, total))
+        rospy.loginfo("Sending transaction with args: l {}, a {}".format(self.current_liability.address.address, total))
 
-        transfer_txn = contract.functions.issueCertificate(self.current_liability.address.address, self.energy_token_address, total).buildTransaction({
+        transfer_txn = contract.functions.issueCertificate(self.current_liability.address.address, total).buildTransaction({
             'chainId': 4451,
-            'gas': 70000,
-            'gasPrice': self.web3.toWei('0', 'gwei'),
+            'gas': 1000000,
+            'gasPrice': self.web3.toWei('0', 'gwei'), # Sidechain only
             'nonce': nonce,
         })
         signed_txn = self.web3.eth.account.signTransaction(transfer_txn, self.private_key)
         tx_hash = self.web3.eth.sendRawTransaction(signed_txn.rawTransaction)
 
         rospy.loginfo("Tx hash {}".format(tx_hash.hex()))
+
+        receipt = None
+        while receipt is None:
+            rospy.sleep(1)
+            receipt = self.web3.eth.getTransactionReceipt(tx_hash.hex())
+
+        token_address = receipt.logs[0].address
+        rospy.loginfo("Token address: {}".format(token_address))
+        self.pub_token.publish(String(data=str(token_address)))
+
         self.pub_tx.publish(String(data=tx_hash.hex()))
 
     def subscribe_and_start(self, liability):
@@ -135,7 +137,7 @@ class IssuerNode:
 
         # Register any topics you need to publish logs, data etc
         prefix = '/liability/eth_' + liability.address.address
-        self.pub_data = rospy.Publisher(prefix+'/data', String, queue_size=128)
+        # self.pub_data = rospy.Publisher(prefix+'/data', String, queue_size=128)
         self.pub_token = rospy.Publisher(prefix + '/token', String, queue_size=128)
         self.pub_total_production = rospy.Publisher(prefix + '/total_production', String, queue_size=128)
         self.pub_tx = rospy.Publisher(prefix + '/txhash', String, queue_size=128)
@@ -149,7 +151,7 @@ class IssuerNode:
         self.liability_proxy.start(liability.address.address)
 
     def unregister_all(self):
-        self.pub_data.unregister()
+        # self.pub_data.unregister()
         self.pub_token.unregister()
         self.pub_total_production.unregister()
         self.pub_tx.unregister()

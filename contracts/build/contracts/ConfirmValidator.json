@@ -80,7 +80,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 31,
-        "sourceUnit": 278,
+        "sourceUnit": 295,
         "src": "25:37:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -91,7 +91,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 31,
-        "sourceUnit": 268,
+        "sourceUnit": 285,
         "src": "63:37:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -105,10 +105,10 @@
               "id": 4,
               "name": "IValidator",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 277,
+              "referencedDeclaration": 294,
               "src": "131:10:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IValidator_$277",
+                "typeIdentifier": "t_contract$_IValidator_$294",
                 "typeString": "contract IValidator"
               }
             },
@@ -118,7 +118,7 @@
           }
         ],
         "contractDependencies": [
-          277
+          294
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -126,7 +126,7 @@
         "id": 30,
         "linearizedBaseContracts": [
           30,
-          277
+          294
         ],
         "name": "ConfirmValidator",
         "nodeType": "ContractDefinition",
@@ -401,7 +401,7 @@
             "scope": 30,
             "src": "263:112:0",
             "stateMutability": "nonpayable",
-            "superFunction": 276,
+            "superFunction": 293,
             "visibility": "external"
           }
         ],
@@ -438,7 +438,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 31,
-        "sourceUnit": 278,
+        "sourceUnit": 295,
         "src": "25:37:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -449,7 +449,7 @@
         "id": 3,
         "nodeType": "ImportDirective",
         "scope": 31,
-        "sourceUnit": 268,
+        "sourceUnit": 285,
         "src": "63:37:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -463,10 +463,10 @@
               "id": 4,
               "name": "IValidator",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 277,
+              "referencedDeclaration": 294,
               "src": "131:10:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IValidator_$277",
+                "typeIdentifier": "t_contract$_IValidator_$294",
                 "typeString": "contract IValidator"
               }
             },
@@ -476,7 +476,7 @@
           }
         ],
         "contractDependencies": [
-          277
+          294
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -484,7 +484,7 @@
         "id": 30,
         "linearizedBaseContracts": [
           30,
-          277
+          294
         ],
         "name": "ConfirmValidator",
         "nodeType": "ContractDefinition",
@@ -759,7 +759,7 @@
             "scope": 30,
             "src": "263:112:0",
             "stateMutability": "nonpayable",
-            "superFunction": 276,
+            "superFunction": 293,
             "visibility": "external"
           }
         ],
@@ -777,12 +777,12 @@
     "4451": {
       "events": {},
       "links": {},
-      "address": "0x96f2AFE0Dd16393dF8E9Ccb8864F40eD0159956d",
-      "transactionHash": "0xd0b5d7b034554d6c52747ad69676cdf299eb0d7dfb53bcac381600b7791f43fc"
+      "address": "0x8a919cC91bA1ac88BF5FdCeb116c35f7Dc1Ed179",
+      "transactionHash": "0x80d3db972a0260f939c614780d5a6188d6b3365f1d9c6d181d4dbc4d63096476"
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-13T14:17:55.821Z",
+  "updatedAt": "2019-08-26T15:17:25.668Z",
   "devdoc": {
     "methods": {}
   },

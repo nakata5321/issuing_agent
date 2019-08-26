@@ -1,8 +1,16 @@
 import os
+import rospy
 from shutil import move
 from tempfile import gettempdir, NamedTemporaryFile
 from ipfsapi import connect
 from rosbag import Bag
+
+def ipfs_download_txt_file(ipfs_hash: str) -> str:
+    temp_log = NamedTemporaryFile(delete=False)
+    ipfs_download_file(connect(), ipfs_hash, temp_log.name)
+
+    with open(temp_log.name) as f:
+        return f.read()
 
 def ipfs_download_file(ipfs_client, multihash, filepath):
     file_dst = filepath

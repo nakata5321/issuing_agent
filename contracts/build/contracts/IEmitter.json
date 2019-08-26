@@ -9,10 +9,6 @@
           "type": "address"
         },
         {
-          "name": "token",
-          "type": "address"
-        },
-        {
           "name": "value",
           "type": "uint256"
         }
@@ -38,25 +34,25 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"liability\",\"type\":\"address\"}],\"name\":\"claimCertificate\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"liability\",\"type\":\"address\"},{\"name\":\"token\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"issueCertificate\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol\":\"IEmitter\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol\":{\"keccak256\":\"0xbeb9ddf2778e8cb24aa34fabb21c94422715372b5350a2e753717db9c9d2895a\",\"urls\":[\"bzzr://d810038c2aae910273a8760b78d94b9add6e77eb37c5434d9fb1f4468f0b400e\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"liability\",\"type\":\"address\"}],\"name\":\"claimCertificate\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"liability\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"issueCertificate\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol\":\"IEmitter\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol\":{\"keccak256\":\"0x6de361e18ec079c9958769176a5477d1d4dbc9669c0bcb813c8e90b88f37d6c5\",\"urls\":[\"bzzr://22b274ccab3063f8cd36a04d72ea3ff0cb382c3b01e0c279d3d8f7908f3ec2a2\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "pragma solidity ^0.5.0;\n\ninterface IEmitter {\n    function issueCertificate(address liability, address token, uint256 value) external;\n    function claimCertificate(address liability) external;\n}\n\n",
+  "source": "pragma solidity ^0.5.0;\n\ninterface IEmitter {\n    function issueCertificate(address liability, uint256 value) external;\n    function claimCertificate(address liability) external;\n}\n\n",
   "sourcePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol",
   "ast": {
     "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol",
     "exportedSymbols": {
       "IEmitter": [
-        228
+        245
       ]
     },
-    "id": 229,
+    "id": 246,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 213,
+        "id": 232,
         "literals": [
           "solidity",
           "^",
@@ -72,9 +68,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 228,
+        "id": 245,
         "linearizedBaseContracts": [
-          228
+          245
         ],
         "name": "IEmitter",
         "nodeType": "ContractDefinition",
@@ -82,22 +78,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 222,
+            "id": 239,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "issueCertificate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 220,
+              "id": 237,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 215,
+                  "id": 234,
                   "name": "liability",
                   "nodeType": "VariableDeclaration",
-                  "scope": 222,
+                  "scope": 239,
                   "src": "76:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -106,7 +102,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 214,
+                    "id": 233,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "76:7:4",
@@ -121,38 +117,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 217,
-                  "name": "token",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 222,
-                  "src": "95:13:4",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 216,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "95:7:4",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 219,
+                  "id": 236,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 222,
-                  "src": "110:13:4",
+                  "scope": 239,
+                  "src": "95:13:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -160,10 +129,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 218,
+                    "id": 235,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "110:7:4",
+                    "src": "95:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -173,16 +142,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "75:49:4"
+              "src": "75:34:4"
             },
             "returnParameters": {
-              "id": 221,
+              "id": 238,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "133:0:4"
+              "src": "118:0:4"
             },
-            "scope": 228,
-            "src": "50:84:4",
+            "scope": 245,
+            "src": "50:69:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -190,23 +159,23 @@
           {
             "body": null,
             "documentation": null,
-            "id": 227,
+            "id": 244,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "claimCertificate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 225,
+              "id": 242,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 224,
+                  "id": 241,
                   "name": "liability",
                   "nodeType": "VariableDeclaration",
-                  "scope": 227,
-                  "src": "165:17:4",
+                  "scope": 244,
+                  "src": "150:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -214,10 +183,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 223,
+                    "id": 240,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "165:7:4",
+                    "src": "150:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -228,39 +197,39 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "164:19:4"
+              "src": "149:19:4"
             },
             "returnParameters": {
-              "id": 226,
+              "id": 243,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "192:0:4"
+              "src": "177:0:4"
             },
-            "scope": 228,
-            "src": "139:54:4",
+            "scope": 245,
+            "src": "124:54:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 229,
-        "src": "25:170:4"
+        "scope": 246,
+        "src": "25:155:4"
       }
     ],
-    "src": "0:197:4"
+    "src": "0:182:4"
   },
   "legacyAST": {
     "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol",
     "exportedSymbols": {
       "IEmitter": [
-        228
+        245
       ]
     },
-    "id": 229,
+    "id": 246,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 213,
+        "id": 232,
         "literals": [
           "solidity",
           "^",
@@ -276,9 +245,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 228,
+        "id": 245,
         "linearizedBaseContracts": [
-          228
+          245
         ],
         "name": "IEmitter",
         "nodeType": "ContractDefinition",
@@ -286,22 +255,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 222,
+            "id": 239,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "issueCertificate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 220,
+              "id": 237,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 215,
+                  "id": 234,
                   "name": "liability",
                   "nodeType": "VariableDeclaration",
-                  "scope": 222,
+                  "scope": 239,
                   "src": "76:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -310,7 +279,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 214,
+                    "id": 233,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "76:7:4",
@@ -325,38 +294,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 217,
-                  "name": "token",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 222,
-                  "src": "95:13:4",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 216,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "95:7:4",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                },
-                {
-                  "constant": false,
-                  "id": 219,
+                  "id": 236,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 222,
-                  "src": "110:13:4",
+                  "scope": 239,
+                  "src": "95:13:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -364,10 +306,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 218,
+                    "id": 235,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "110:7:4",
+                    "src": "95:7:4",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -377,16 +319,16 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "75:49:4"
+              "src": "75:34:4"
             },
             "returnParameters": {
-              "id": 221,
+              "id": 238,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "133:0:4"
+              "src": "118:0:4"
             },
-            "scope": 228,
-            "src": "50:84:4",
+            "scope": 245,
+            "src": "50:69:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
@@ -394,23 +336,23 @@
           {
             "body": null,
             "documentation": null,
-            "id": 227,
+            "id": 244,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "claimCertificate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 225,
+              "id": 242,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 224,
+                  "id": 241,
                   "name": "liability",
                   "nodeType": "VariableDeclaration",
-                  "scope": 227,
-                  "src": "165:17:4",
+                  "scope": 244,
+                  "src": "150:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -418,10 +360,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 223,
+                    "id": 240,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "165:7:4",
+                    "src": "150:7:4",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -432,26 +374,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "164:19:4"
+              "src": "149:19:4"
             },
             "returnParameters": {
-              "id": 226,
+              "id": 243,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "192:0:4"
+              "src": "177:0:4"
             },
-            "scope": 228,
-            "src": "139:54:4",
+            "scope": 245,
+            "src": "124:54:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 229,
-        "src": "25:170:4"
+        "scope": 246,
+        "src": "25:155:4"
       }
     ],
-    "src": "0:197:4"
+    "src": "0:182:4"
   },
   "compiler": {
     "name": "solc",
@@ -459,7 +401,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-13T14:16:00.748Z",
+  "updatedAt": "2019-08-26T15:15:42.894Z",
   "devdoc": {
     "methods": {}
   },

@@ -1,7 +1,7 @@
 Issuing Service
 ---------------
 
-**model:** `QmUB6ajZTLLMZg7re1v4hw44aoG8HDQDHr9JyujU264Aw2`
+**model:** `QmfK3LyEPLoYJCKXate1PceGLBNBaodwqcV9XirwHZFbsc`
 
 The agent is responsible for checking the data and issuing the green certificates.
 

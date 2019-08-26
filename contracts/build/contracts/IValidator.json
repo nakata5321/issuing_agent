@@ -32,14 +32,14 @@
     "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol",
     "exportedSymbols": {
       "IValidator": [
-        277
+        294
       ]
     },
-    "id": 278,
+    "id": 295,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 269,
+        "id": 286,
         "literals": [
           "solidity",
           "^",
@@ -55,9 +55,9 @@
         "contractKind": "contract",
         "documentation": "@dev Observing network contract interface",
         "fullyImplemented": false,
-        "id": 277,
+        "id": 294,
         "linearizedBaseContracts": [
-          277
+          294
         ],
         "name": "IValidator",
         "nodeType": "ContractDefinition",
@@ -65,22 +65,22 @@
           {
             "body": null,
             "documentation": "@dev Be sure than address is really validator\n@return true when validator address in argument",
-            "id": 276,
+            "id": 293,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isValidator",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 272,
+              "id": 289,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 271,
+                  "id": 288,
                   "name": "_validator",
                   "nodeType": "VariableDeclaration",
-                  "scope": 276,
+                  "scope": 293,
                   "src": "249:18:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -89,7 +89,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 270,
+                    "id": 287,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "249:7:6",
@@ -106,15 +106,15 @@
               "src": "248:20:6"
             },
             "returnParameters": {
-              "id": 275,
+              "id": 292,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 274,
+                  "id": 291,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 276,
+                  "scope": 293,
                   "src": "287:4:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -123,7 +123,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 273,
+                    "id": 290,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "287:4:6",
@@ -138,14 +138,14 @@
               ],
               "src": "286:6:6"
             },
-            "scope": 277,
+            "scope": 294,
             "src": "228:65:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 278,
+        "scope": 295,
         "src": "78:217:6"
       }
     ],
@@ -155,14 +155,14 @@
     "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol",
     "exportedSymbols": {
       "IValidator": [
-        277
+        294
       ]
     },
-    "id": 278,
+    "id": 295,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 269,
+        "id": 286,
         "literals": [
           "solidity",
           "^",
@@ -178,9 +178,9 @@
         "contractKind": "contract",
         "documentation": "@dev Observing network contract interface",
         "fullyImplemented": false,
-        "id": 277,
+        "id": 294,
         "linearizedBaseContracts": [
-          277
+          294
         ],
         "name": "IValidator",
         "nodeType": "ContractDefinition",
@@ -188,22 +188,22 @@
           {
             "body": null,
             "documentation": "@dev Be sure than address is really validator\n@return true when validator address in argument",
-            "id": 276,
+            "id": 293,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isValidator",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 272,
+              "id": 289,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 271,
+                  "id": 288,
                   "name": "_validator",
                   "nodeType": "VariableDeclaration",
-                  "scope": 276,
+                  "scope": 293,
                   "src": "249:18:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -212,7 +212,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 270,
+                    "id": 287,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "249:7:6",
@@ -229,15 +229,15 @@
               "src": "248:20:6"
             },
             "returnParameters": {
-              "id": 275,
+              "id": 292,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 274,
+                  "id": 291,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 276,
+                  "scope": 293,
                   "src": "287:4:6",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -246,7 +246,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 273,
+                    "id": 290,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "287:4:6",
@@ -261,14 +261,14 @@
               ],
               "src": "286:6:6"
             },
-            "scope": 277,
+            "scope": 294,
             "src": "228:65:6",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 278,
+        "scope": 295,
         "src": "78:217:6"
       }
     ],
@@ -280,7 +280,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-13T14:16:00.749Z",
+  "updatedAt": "2019-08-26T15:15:42.895Z",
   "devdoc": {
     "details": "Observing network contract interface",
     "methods": {

@@ -9,16 +9,13 @@ import json
 
 # ROS
 import rospy
-import rosbag
 
 # Robonomics communication
 from robonomics_msgs.msg import Offer, Demand
 from ethereum_common.msg import Address, UInt256
 from ethereum_common.srv import Accounts, BlockNumber
-from ipfs_common.msg import Multihash, Filepath
-from ipfs_common.srv import IpfsDownloadFile, IpfsDownloadFileRequest, IpfsDownloadFileResponse
-from rosbag import Bag
-from issuing_service_agent.ipfs_utils import ipfs_download, ipfs_download_file
+from ipfs_common.msg import Multihash
+from issuing_service_agent.ipfs_utils import ipfs_download, ipfs_download_txt_file
 
 
 class CheckerNode:
@@ -58,13 +55,8 @@ class CheckerNode:
     def extract_log(self, ipfs_hash):
         rospy.loginfo("Downloading log: {}".format(ipfs_hash))
 
-        temp_log = NamedTemporaryFile(delete=False)
-
-        res = ipfs_download_file(connect(), ipfs_hash, temp_log.name)
-
-        if res:
-            with open(temp_log.name, 'r') as f:
-                return json.loads(f.read())
+        res = ipfs_download_txt_file(ipfs_hash)
+        return json.loads(res)
 
         # TODO raise exception
 
@@ -94,8 +86,12 @@ class CheckerNode:
         offer.cost = incoming.cost
         offer.lighthouse = Address()
         offer.lighthouse.address = rospy.get_param('~lighthouse')
-        offer.validator = Address()
-        offer.validator.address = rospy.get_param('~validator')
+
+        if incoming.validator.address == '0x0000000000000000000000000000000000000000':
+            offer.validator = incoming.validator
+        else:
+            offer.validator = Address(rospy.get_param('~validator'))
+
         offer.lighthouseFee = UInt256()
         offer.lighthouseFee.uint256 = '0'
         offer.deadline = UInt256()
