@@ -14,20 +14,26 @@ contract Emitter is WhitelistedRole, IEmitter {
         uint256 value;
     }
 
+    event NewToken(address addr, uint256 value);
+
     /**
      * @dev Green certificate mapping by liability address
      */
     mapping(address => Certificate) public certificates;
 
-    function issueCertificate(address liability, address token, uint256 value) external onlyWhitelisted {
-        require(certificates[liability].value == 0);
-        certificates[liability].token = token;
+    function issueCertificate(address liability, uint256 value) external onlyWhitelisted {
+        // require(certificates[liability].value == 0);
+
+        EnergyToken et = new EnergyToken();
+
+        emit NewToken(address(et), value);
+        certificates[liability].token = address(et);
         certificates[liability].value = value;
     }
 
     function claimCertificate(address liability) external {
         require(certificates[liability].value > 0);
-        require(ILiability(liability).isFinalized());
+        // require(ILiability(liability).isFinalized());
 
         EnergyToken _token = EnergyToken(certificates[liability].token);
         _token.mint(msg.sender, certificates[liability].value);

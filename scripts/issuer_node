@@ -111,23 +111,29 @@ class IssuerNode:
         self.pub_period_end.publish(String(data=end_ts))
 
     def _send_tx(self, total):
-        self.pub_token.publish(String(data=self.energy_token_address))
-
         contract = self.web3.eth.contract(address=self.emitter_contract, abi=self.emitter_contract_abi)
         nonce = self.web3.eth.getTransactionCount(self.eth_address)
 
-        rospy.loginfo("Sending transaction with args: l {}, t {}, a {}".format(self.current_liability.address.address, self.energy_token_address, total))
+        rospy.loginfo("Sending transaction with args: l {}, a {}".format(self.current_liability.address.address, total))
 
         transfer_txn = contract.functions.issueCertificate(self.current_liability.address.address, self.energy_token_address, total).buildTransaction({
             'chainId': 4451,
-            'gas': 70000,
-            'gasPrice': self.web3.toWei('0', 'gwei'),
+            'gas': 1000000,
+            'gasPrice': self.web3.toWei('0', 'gwei'), # Sidechain only
             'nonce': nonce,
         })
         signed_txn = self.web3.eth.account.signTransaction(transfer_txn, self.private_key)
         tx_hash = self.web3.eth.sendRawTransaction(signed_txn.rawTransaction)
 
         rospy.loginfo("Tx hash {}".format(tx_hash.hex()))
+
+        receipt = None
+        while receipt is None:
+            rospy.sleep(1)
+            receipt = self.web3.eth.getTransactionReceipt(tx_hash.hex())
+
+        self.pub_token.publish(String(data=str(receipt.logs[0].address)))
+
         self.pub_tx.publish(String(data=tx_hash.hex()))
 
     def subscribe_and_start(self, liability):
