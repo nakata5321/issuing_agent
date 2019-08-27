@@ -37,7 +37,7 @@ Parameters:
 
 Result message contains the following topics:
 
-* `/liability/eth_<liability_address>/data` - contains the same log as in `/log` topic
+* `/liability/eth_<liability_address>/log` - contains the same log as in `/log` topic
 * `/liability/eth_<liability_address>/period_start` - the beginning of measurement
 * `/liability/eth_<liability_address>/period_end` - the ending of measurement
 * `/liability/eth_<liability_address>/token` - the address of the token in Ethereum
@@ -51,7 +51,7 @@ Every topic's type is `std_msgs/String`
 
 During its work the issuer node sends a transaction to a smart contract by address `emitter_contract`.
 
-There are all the necessary contracts deployed to sidechain network, but the easiest way to create a new set of contracts is:
+There are all the necessary contracts deployed to [sidechain](https://github.com/airalab/airalab-sidechain) network, but the easiest way to create a new set of contracts is:
 
 ```
 cd contracts
