@@ -80,8 +80,6 @@ class IssuerNode:
         # send a transaction to the Emitter
         self._send_tx(total)
 
-        self.liability_proxy.finish(self.current_liability.address.address, True)
-
         self.unregister_all()
         rospy.loginfo('Process complete.')
         self.current_liability = None
@@ -151,14 +149,16 @@ class IssuerNode:
         self.liability_proxy.start(liability.address.address)
 
     def unregister_all(self):
-        # self.pub_data.unregister()
+        self.sub_log.unregister()
+
+        self.liability_proxy.finish(self.current_liability.address.address, True)
+
         self.pub_token.unregister()
         self.pub_total_production.unregister()
         self.pub_tx.unregister()
         self.pub_period_start.unregister()
         self.pub_period_end.unregister()
         self.pub_unit.unregister()
-        self.sub_log.unregister()
 
     def spin(self):
         Thread(target=self._process_liability_queue, daemon=True).start()
