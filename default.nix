@@ -7,7 +7,7 @@
 mkRosPackage rec {
   name = "${pname}-${version}";
   pname = "issuing_service_agent";
-  version = "master";
+  version = "0.1.0";
 
   src = ./.;
 
