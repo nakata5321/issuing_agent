@@ -45,14 +45,14 @@
     "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol",
     "exportedSymbols": {
       "IEmitter": [
-        245
+        236
       ]
     },
-    "id": 246,
+    "id": 237,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 232,
+        "id": 223,
         "literals": [
           "solidity",
           "^",
@@ -68,9 +68,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 245,
+        "id": 236,
         "linearizedBaseContracts": [
-          245
+          236
         ],
         "name": "IEmitter",
         "nodeType": "ContractDefinition",
@@ -78,22 +78,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 239,
+            "id": 230,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "issueCertificate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 237,
+              "id": 228,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 234,
+                  "id": 225,
                   "name": "liability",
                   "nodeType": "VariableDeclaration",
-                  "scope": 239,
+                  "scope": 230,
                   "src": "76:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -102,7 +102,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 233,
+                    "id": 224,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "76:7:4",
@@ -117,10 +117,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 236,
+                  "id": 227,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 239,
+                  "scope": 230,
                   "src": "95:13:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -129,7 +129,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 235,
+                    "id": 226,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "95:7:4",
@@ -145,12 +145,12 @@
               "src": "75:34:4"
             },
             "returnParameters": {
-              "id": 238,
+              "id": 229,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "118:0:4"
             },
-            "scope": 245,
+            "scope": 236,
             "src": "50:69:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -159,22 +159,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 244,
+            "id": 235,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "claimCertificate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 242,
+              "id": 233,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 241,
+                  "id": 232,
                   "name": "liability",
                   "nodeType": "VariableDeclaration",
-                  "scope": 244,
+                  "scope": 235,
                   "src": "150:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -183,7 +183,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 240,
+                    "id": 231,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "150:7:4",
@@ -200,19 +200,19 @@
               "src": "149:19:4"
             },
             "returnParameters": {
-              "id": 243,
+              "id": 234,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "177:0:4"
             },
-            "scope": 245,
+            "scope": 236,
             "src": "124:54:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 246,
+        "scope": 237,
         "src": "25:155:4"
       }
     ],
@@ -222,14 +222,14 @@
     "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol",
     "exportedSymbols": {
       "IEmitter": [
-        245
+        236
       ]
     },
-    "id": 246,
+    "id": 237,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 232,
+        "id": 223,
         "literals": [
           "solidity",
           "^",
@@ -245,9 +245,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 245,
+        "id": 236,
         "linearizedBaseContracts": [
-          245
+          236
         ],
         "name": "IEmitter",
         "nodeType": "ContractDefinition",
@@ -255,22 +255,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 239,
+            "id": 230,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "issueCertificate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 237,
+              "id": 228,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 234,
+                  "id": 225,
                   "name": "liability",
                   "nodeType": "VariableDeclaration",
-                  "scope": 239,
+                  "scope": 230,
                   "src": "76:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -279,7 +279,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 233,
+                    "id": 224,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "76:7:4",
@@ -294,10 +294,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 236,
+                  "id": 227,
                   "name": "value",
                   "nodeType": "VariableDeclaration",
-                  "scope": 239,
+                  "scope": 230,
                   "src": "95:13:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -306,7 +306,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 235,
+                    "id": 226,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "95:7:4",
@@ -322,12 +322,12 @@
               "src": "75:34:4"
             },
             "returnParameters": {
-              "id": 238,
+              "id": 229,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "118:0:4"
             },
-            "scope": 245,
+            "scope": 236,
             "src": "50:69:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -336,22 +336,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 244,
+            "id": 235,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "claimCertificate",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 242,
+              "id": 233,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 241,
+                  "id": 232,
                   "name": "liability",
                   "nodeType": "VariableDeclaration",
-                  "scope": 244,
+                  "scope": 235,
                   "src": "150:17:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -360,7 +360,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 240,
+                    "id": 231,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "150:7:4",
@@ -377,19 +377,19 @@
               "src": "149:19:4"
             },
             "returnParameters": {
-              "id": 243,
+              "id": 234,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "177:0:4"
             },
-            "scope": 245,
+            "scope": 236,
             "src": "124:54:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 246,
+        "scope": 237,
         "src": "25:155:4"
       }
     ],
@@ -401,7 +401,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-08-26T15:15:42.894Z",
+  "updatedAt": "2019-09-10T12:41:42.151Z",
   "devdoc": {
     "methods": {}
   },

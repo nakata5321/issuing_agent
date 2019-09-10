@@ -2,13 +2,46 @@
   "contractName": "ConfirmValidator",
   "abi": [
     {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "addWhitelisted",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "removeWhitelisted",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "constant": true,
-      "inputs": [],
-      "name": "validator",
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "isWhitelisted",
       "outputs": [
         {
           "name": "",
-          "type": "address"
+          "type": "bool"
         }
       ],
       "payable": false,
@@ -16,15 +49,103 @@
       "type": "function"
     },
     {
+      "constant": false,
+      "inputs": [],
+      "name": "renounceWhitelistAdmin",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
       "inputs": [
         {
-          "name": "_validator",
+          "name": "account",
           "type": "address"
         }
       ],
+      "name": "addWhitelistAdmin",
+      "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "constructor"
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "isWhitelistAdmin",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "renounceWhitelisted",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "WhitelistedAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "WhitelistedRemoved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "WhitelistAdminAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "account",
+          "type": "address"
+        }
+      ],
+      "name": "WhitelistAdminRemoved",
+      "type": "event"
     },
     {
       "constant": false,
@@ -46,21 +167,21 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"validator\",\"outputs\":[{\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_validator\",\"type\":\"address\"}],\"name\":\"isValidator\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"name\":\"_validator\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/ConfirmValidator.sol\":\"ConfirmValidator\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/ConfirmValidator.sol\":{\"keccak256\":\"0x55dd10dcdd63151956126604ac6ed0bafb9e2443d33bcd90728d048e69ae07a8\",\"urls\":[\"bzzr://12f63ea2d91f4912962898aaa7971c5173a40731b21eb59ffea5183834685c5d\"]},\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/ILiability.sol\":{\"keccak256\":\"0x44243c4bb60a926fef0dbd9a022ab603994d1bfc46dae725c3b9873b6092a8bd\",\"urls\":[\"bzzr://2e6ed4fe8462218219ca669dc2ef3e5f99c056636fd4bda13a1b2eebb6625dc2\"]},\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol\":{\"keccak256\":\"0x5a07a552141cda2556c8fa41725e2e63ca34f1c4d3686fb6dcc458f535dd56c4\",\"urls\":[\"bzzr://ff3b3845346bb7be2512022d894a855b000f4322f68daae373449818908d1964\"]}},\"version\":1}",
-  "bytecode": "0x608060405234801561001057600080fd5b5060405160208061019a8339810180604052602081101561003057600080fd5b505160008054600160a060020a03909216600160a060020a0319909216919091179055610138806100626000396000f3fe608060405234801561001057600080fd5b5060043610610052577c010000000000000000000000000000000000000000000000000000000060003504633a5381b58114610057578063facd743b14610088575b600080fd5b61005f6100cf565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b6100bb6004803603602081101561009e57600080fd5b503573ffffffffffffffffffffffffffffffffffffffff166100eb565b604080519115158252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff1681565b60005473ffffffffffffffffffffffffffffffffffffffff9081169116149056fea165627a7a723058207e47e028e5b6b17113d05ac3c2af161a4a2d79b6a68e653f5bc0ae234006a1350029",
-  "deployedBytecode": "0x608060405234801561001057600080fd5b5060043610610052577c010000000000000000000000000000000000000000000000000000000060003504633a5381b58114610057578063facd743b14610088575b600080fd5b61005f6100cf565b6040805173ffffffffffffffffffffffffffffffffffffffff9092168252519081900360200190f35b6100bb6004803603602081101561009e57600080fd5b503573ffffffffffffffffffffffffffffffffffffffff166100eb565b604080519115158252519081900360200190f35b60005473ffffffffffffffffffffffffffffffffffffffff1681565b60005473ffffffffffffffffffffffffffffffffffffffff9081169116149056fea165627a7a723058207e47e028e5b6b17113d05ac3c2af161a4a2d79b6a68e653f5bc0ae234006a1350029",
-  "sourceMap": "102:275:0:-;;;179:78;8:9:-1;5:2;;;30:1;27;20:12;5:2;179:78:0;;;;;;;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;179:78:0;228:9;:22;;-1:-1:-1;;;;;228:22:0;;;-1:-1:-1;;;;;;228:22:0;;;;;;;;;102:275;;;;;;",
-  "deployedSourceMap": "102:275:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;102:275:0;;;;;;;;;;;;;;;;;;;;;;;;148:24;;;:::i;:::-;;;;;;;;;;;;;;;;;;;263:112;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;263:112:0;;;;:::i;:::-;;;;;;;;;;;;;;;;;;148:24;;;;;;:::o;263:112::-;322:4;359:9;;;;;345:23;;;;263:112::o",
-  "source": "pragma solidity ^0.5.0;\n\nimport './interfaces/IValidator.sol';\nimport './interfaces/ILiability.sol';\n\ncontract ConfirmValidator is IValidator {\n    address public validator;\n\n    constructor(address _validator) public {\n        validator = _validator;\n    }\n\n    function isValidator(address _validator) external returns (bool) {\n        return _validator == validator;\n    }\n}\n\n",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"addWhitelisted\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"removeWhitelisted\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"isWhitelisted\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceWhitelistAdmin\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"addWhitelistAdmin\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"name\":\"account\",\"type\":\"address\"}],\"name\":\"isWhitelistAdmin\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[],\"name\":\"renounceWhitelisted\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_validator\",\"type\":\"address\"}],\"name\":\"isValidator\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"account\",\"type\":\"address\"}],\"name\":\"WhitelistedAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"account\",\"type\":\"address\"}],\"name\":\"WhitelistedRemoved\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"account\",\"type\":\"address\"}],\"name\":\"WhitelistAdminAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"name\":\"account\",\"type\":\"address\"}],\"name\":\"WhitelistAdminRemoved\",\"type\":\"event\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/ConfirmValidator.sol\":\"ConfirmValidator\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/ConfirmValidator.sol\":{\"keccak256\":\"0x5634f965dbc16c4f5f6a6962ddd9de6ccf4d8eb412b826905567c32af3c9ac6d\",\"urls\":[\"bzzr://acf2ff0f2f123fffb4ef1237971f857bf4a60fdbe630d9f2b8b89a3c9c44ffa2\"]},\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/ILiability.sol\":{\"keccak256\":\"0x44243c4bb60a926fef0dbd9a022ab603994d1bfc46dae725c3b9873b6092a8bd\",\"urls\":[\"bzzr://2e6ed4fe8462218219ca669dc2ef3e5f99c056636fd4bda13a1b2eebb6625dc2\"]},\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol\":{\"keccak256\":\"0x5a07a552141cda2556c8fa41725e2e63ca34f1c4d3686fb6dcc458f535dd56c4\",\"urls\":[\"bzzr://ff3b3845346bb7be2512022d894a855b000f4322f68daae373449818908d1964\"]},\"/home/vadim/Projects/issuing-service-package/contracts/node_modules/openzeppelin-solidity/contracts/access/Roles.sol\":{\"keccak256\":\"0xb002c378d7b82a101bd659c341518953ca0919d342c0a400196982c0e7e7bcdb\",\"urls\":[\"bzzr://bd34c1ce05b5b2b3a62fc02e160f6805b1cadd476854664f433c685b2fda8dad\"]},\"/home/vadim/Projects/issuing-service-package/contracts/node_modules/openzeppelin-solidity/contracts/access/roles/WhitelistAdminRole.sol\":{\"keccak256\":\"0xd2c87384e7346f702df3be70e99fff30f22f7b9767a9502afb345f0457ddf36f\",\"urls\":[\"bzzr://3f300be02f06cae39a29cdf6d4f1d6b3faedf818c83c5623a512e189bdad690a\"]},\"/home/vadim/Projects/issuing-service-package/contracts/node_modules/openzeppelin-solidity/contracts/access/roles/WhitelistedRole.sol\":{\"keccak256\":\"0x110b2fab50ea257de28a8d2b03e05dc11b9e5213841dabfe784aacca8c109cda\",\"urls\":[\"bzzr://a7085973dd319349c9cfd1323e560bddc5e1db25959fd0198b2db1bd02631f72\"]}},\"version\":1}",
+  "bytecode": "0x60806040526100163364010000000061001b810204565b61018f565b61003360008264010000000061047b61006a82021704565b604051600160a060020a038216907f22380c05984257a1cb900161c713dd71d39e74820f1aea43bd3f1bdd2096129990600090a250565b61007d828264010000000061010e810204565b156100e957604080517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601f60248201527f526f6c65733a206163636f756e7420616c72656164792068617320726f6c6500604482015290519081900360640190fd5b600160a060020a0316600090815260209190915260409020805460ff19166001179055565b6000600160a060020a03821661016f576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004018080602001828103825260228152602001806107b66022913960400191505060405180910390fd5b50600160a060020a03166000908152602091909152604090205460ff1690565b6106188061019e6000396000f3fe608060405234801561001057600080fd5b50600436106100a5576000357c0100000000000000000000000000000000000000000000000000000000900480637362d9c8116100785780637362d9c81461013a578063bb5f747b14610160578063d6cd947314610186578063facd743b1461018e576100a5565b806310154bad146100aa578063291d9549146100d25780633af32abf146100f85780634c5a628c14610132575b600080fd5b6100d0600480360360208110156100c057600080fd5b5035600160a060020a03166101b4565b005b6100d0600480360360208110156100e857600080fd5b5035600160a060020a0316610207565b61011e6004803603602081101561010e57600080fd5b5035600160a060020a0316610257565b604080519115158252519081900360200190f35b6100d0610270565b6100d06004803603602081101561015057600080fd5b5035600160a060020a031661027b565b61011e6004803603602081101561017657600080fd5b5035600160a060020a03166102cb565b6100d06102dd565b61011e600480360360208110156101a457600080fd5b5035600160a060020a03166102e6565b6101bd336102cb565b6101fb5760405160e560020a62461bcd0281526004018080602001828103825260408152602001806105ad6040913960400191505060405180910390fd5b610204816102f1565b50565b610210336102cb565b61024e5760405160e560020a62461bcd0281526004018080602001828103825260408152602001806105ad6040913960400191505060405180910390fd5b61020481610339565b600061026a60018363ffffffff61038116565b92915050565b610279336103eb565b565b610284336102cb565b6102c25760405160e560020a62461bcd0281526004018080602001828103825260408152602001806105ad6040913960400191505060405180910390fd5b61020481610433565b600061026a818363ffffffff61038116565b61027933610339565b600061026a82610257565b61030260018263ffffffff61047b16565b604051600160a060020a038216907fee1504a83b6d4a361f4c1dc78ab59bfa30d6a3b6612c403e86bb01ef2984295f90600090a250565b61034a60018263ffffffff6104ff16565b604051600160a060020a038216907f270d9b30cf5b0793bbfd54c9d5b94aeb49462b8148399000265144a8722da6b690600090a250565b6000600160a060020a0382166103cb5760405160e560020a62461bcd02815260040180806020018281038252602281526020018061058b6022913960400191505060405180910390fd5b50600160a060020a03166000908152602091909152604090205460ff1690565b6103fc60008263ffffffff6104ff16565b604051600160a060020a038216907f0a8eb35e5ca14b3d6f28e4abf2f128dbab231a58b56e89beb5d636115001e16590600090a250565b61044460008263ffffffff61047b16565b604051600160a060020a038216907f22380c05984257a1cb900161c713dd71d39e74820f1aea43bd3f1bdd2096129990600090a250565b6104858282610381565b156104da576040805160e560020a62461bcd02815260206004820152601f60248201527f526f6c65733a206163636f756e7420616c72656164792068617320726f6c6500604482015290519081900360640190fd5b600160a060020a0316600090815260209190915260409020805460ff19166001179055565b6105098282610381565b6105475760405160e560020a62461bcd02815260040180806020018281038252602181526020018061056a6021913960400191505060405180910390fd5b600160a060020a0316600090815260209190915260409020805460ff1916905556fe526f6c65733a206163636f756e7420646f6573206e6f74206861766520726f6c65526f6c65733a206163636f756e7420697320746865207a65726f206164647265737357686974656c69737441646d696e526f6c653a2063616c6c657220646f6573206e6f742068617665207468652057686974656c69737441646d696e20726f6c65a165627a7a72305820f910328b3acb2f39444f9466eed43f5ddacdfaededd643d5f1641154fb7a79740029526f6c65733a206163636f756e7420697320746865207a65726f2061646472657373",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100a5576000357c0100000000000000000000000000000000000000000000000000000000900480637362d9c8116100785780637362d9c81461013a578063bb5f747b14610160578063d6cd947314610186578063facd743b1461018e576100a5565b806310154bad146100aa578063291d9549146100d25780633af32abf146100f85780634c5a628c14610132575b600080fd5b6100d0600480360360208110156100c057600080fd5b5035600160a060020a03166101b4565b005b6100d0600480360360208110156100e857600080fd5b5035600160a060020a0316610207565b61011e6004803603602081101561010e57600080fd5b5035600160a060020a0316610257565b604080519115158252519081900360200190f35b6100d0610270565b6100d06004803603602081101561015057600080fd5b5035600160a060020a031661027b565b61011e6004803603602081101561017657600080fd5b5035600160a060020a03166102cb565b6100d06102dd565b61011e600480360360208110156101a457600080fd5b5035600160a060020a03166102e6565b6101bd336102cb565b6101fb5760405160e560020a62461bcd0281526004018080602001828103825260408152602001806105ad6040913960400191505060405180910390fd5b610204816102f1565b50565b610210336102cb565b61024e5760405160e560020a62461bcd0281526004018080602001828103825260408152602001806105ad6040913960400191505060405180910390fd5b61020481610339565b600061026a60018363ffffffff61038116565b92915050565b610279336103eb565b565b610284336102cb565b6102c25760405160e560020a62461bcd0281526004018080602001828103825260408152602001806105ad6040913960400191505060405180910390fd5b61020481610433565b600061026a818363ffffffff61038116565b61027933610339565b600061026a82610257565b61030260018263ffffffff61047b16565b604051600160a060020a038216907fee1504a83b6d4a361f4c1dc78ab59bfa30d6a3b6612c403e86bb01ef2984295f90600090a250565b61034a60018263ffffffff6104ff16565b604051600160a060020a038216907f270d9b30cf5b0793bbfd54c9d5b94aeb49462b8148399000265144a8722da6b690600090a250565b6000600160a060020a0382166103cb5760405160e560020a62461bcd02815260040180806020018281038252602281526020018061058b6022913960400191505060405180910390fd5b50600160a060020a03166000908152602091909152604090205460ff1690565b6103fc60008263ffffffff6104ff16565b604051600160a060020a038216907f0a8eb35e5ca14b3d6f28e4abf2f128dbab231a58b56e89beb5d636115001e16590600090a250565b61044460008263ffffffff61047b16565b604051600160a060020a038216907f22380c05984257a1cb900161c713dd71d39e74820f1aea43bd3f1bdd2096129990600090a250565b6104858282610381565b156104da576040805160e560020a62461bcd02815260206004820152601f60248201527f526f6c65733a206163636f756e7420616c72656164792068617320726f6c6500604482015290519081900360640190fd5b600160a060020a0316600090815260209190915260409020805460ff19166001179055565b6105098282610381565b6105475760405160e560020a62461bcd02815260040180806020018281038252602181526020018061056a6021913960400191505060405180910390fd5b600160a060020a0316600090815260209190915260409020805460ff1916905556fe526f6c65733a206163636f756e7420646f6573206e6f74206861766520726f6c65526f6c65733a206163636f756e7420697320746865207a65726f206164647265737357686974656c69737441646d696e526f6c653a2063616c6c657220646f6573206e6f742068617665207468652057686974656c69737441646d696e20726f6c65a165627a7a72305820f910328b3acb2f39444f9466eed43f5ddacdfaededd643d5f1641154fb7a79740029",
+  "sourceMap": "193:179:0:-;;;433:30:9;452:10;433:18;;;;:30;:::i;:::-;193:179:0;;991:143:9;1055:29;:16;1076:7;1055:20;;;;;;:29;:::i;:::-;1099:28;;-1:-1:-1;;;;;1099:28:9;;;;;;;;991:143;:::o;260:175:7:-;337:18;341:4;347:7;337:3;;;;:18;:::i;:::-;336:19;328:63;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;401:20:7;:11;:20;;;;;;;;;;;:27;;-1:-1:-1;;401:27:7;424:4;401:27;;;260:175::o;779:200::-;851:4;-1:-1:-1;;;;;875:21:7;;867:68;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;;952:20:7;:11;:20;;;;;;;;;;;;;;;779:200::o;193:179:0:-;;;;;;;",
+  "deployedSourceMap": "193:179:0:-;;;;8:9:-1;5:2;;;30:1;27;20:12;5:2;193:179:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;910:108:10;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;910:108:10;-1:-1:-1;;;;;910:108:10;;:::i;:::-;;1024:114;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;1024:114:10;-1:-1:-1;;;;;1024:114:10;;:::i;787:117::-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;787:117:10;-1:-1:-1;;;;;787:117:10;;:::i;:::-;;;;;;;;;;;;;;;;;;894:91:9;;;:::i;774:114::-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;774:114:9;-1:-1:-1;;;;;774:114:9;;:::i;645:123::-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;645:123:9;-1:-1:-1;;;;;645:123:9;;:::i;1144:85:10:-;;;:::i;256:114:0:-;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;256:114:0;-1:-1:-1;;;;;256:114:0;;:::i;910:108:10:-;524:28:9;541:10;524:16;:28::i;:::-;516:105;;;;-1:-1:-1;;;;;516:105:9;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;987:24:10;1003:7;987:15;:24::i;:::-;910:108;:::o;1024:114::-;524:28:9;541:10;524:16;:28::i;:::-;516:105;;;;-1:-1:-1;;;;;516:105:9;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1104:27:10;1123:7;1104:18;:27::i;787:117::-;848:4;871:26;:13;889:7;871:26;:17;:26;:::i;:::-;864:33;787:117;-1:-1:-1;;787:117:10:o;894:91:9:-;945:33;967:10;945:21;:33::i;:::-;894:91::o;774:114::-;524:28;541:10;524:16;:28::i;:::-;516:105;;;;-1:-1:-1;;;;;516:105:9;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;854:27;873:7;854:18;:27::i;645:123::-;709:4;732:29;709:4;753:7;732:29;:20;:29;:::i;1144:85:10:-;1192:30;1211:10;1192:18;:30::i;256:114:0:-;315:4;338:25;352:10;338:13;:25::i;1235:134:10:-;1296:26;:13;1314:7;1296:26;:17;:26;:::i;:::-;1337:25;;-1:-1:-1;;;;;1337:25:10;;;;;;;;1235:134;:::o;1375:142::-;1439:29;:13;1460:7;1439:29;:20;:29;:::i;:::-;1483:27;;-1:-1:-1;;;;;1483:27:10;;;;;;;;1375:142;:::o;779:200:7:-;851:4;-1:-1:-1;;;;;875:21:7;;867:68;;;;-1:-1:-1;;;;;867:68:7;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;;952:20:7;:11;:20;;;;;;;;;;;;;;;779:200::o;1140:151:9:-;1207:32;:16;1231:7;1207:32;:23;:32;:::i;:::-;1254:30;;-1:-1:-1;;;;;1254:30:9;;;;;;;;1140:151;:::o;991:143::-;1055:29;:16;1076:7;1055:29;:20;:29;:::i;:::-;1099:28;;-1:-1:-1;;;;;1099:28:9;;;;;;;;991:143;:::o;260:175:7:-;337:18;341:4;347:7;337:3;:18::i;:::-;336:19;328:63;;;;;-1:-1:-1;;;;;328:63:7;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;401:20:7;:11;:20;;;;;;;;;;;:27;;-1:-1:-1;;401:27:7;424:4;401:27;;;260:175::o;510:180::-;589:18;593:4;599:7;589:3;:18::i;:::-;581:64;;;;-1:-1:-1;;;;;581:64:7;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;655:20:7;678:5;655:20;;;;;;;;;;;:28;;-1:-1:-1;;655:28:7;;;510:180::o",
+  "source": "pragma solidity ^0.5.0;\n\nimport './interfaces/IValidator.sol';\nimport './interfaces/ILiability.sol';\nimport '../node_modules/openzeppelin-solidity/contracts/access/roles/WhitelistedRole.sol';\n\ncontract ConfirmValidator is WhitelistedRole, IValidator {\n    function isValidator(address _validator) external returns (bool) {\n        return isWhitelisted(_validator);\n    }\n}\n\n",
   "sourcePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/ConfirmValidator.sol",
   "ast": {
     "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/ConfirmValidator.sol",
     "exportedSymbols": {
       "ConfirmValidator": [
-        30
+        21
       ]
     },
-    "id": 31,
+    "id": 22,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -79,8 +200,8 @@
         "file": "./interfaces/IValidator.sol",
         "id": 2,
         "nodeType": "ImportDirective",
-        "scope": 31,
-        "sourceUnit": 295,
+        "scope": 22,
+        "sourceUnit": 286,
         "src": "25:37:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -90,9 +211,20 @@
         "file": "./interfaces/ILiability.sol",
         "id": 3,
         "nodeType": "ImportDirective",
-        "scope": 31,
-        "sourceUnit": 285,
+        "scope": 22,
+        "sourceUnit": 276,
         "src": "63:37:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/node_modules/openzeppelin-solidity/contracts/access/roles/WhitelistedRole.sol",
+        "file": "../node_modules/openzeppelin-solidity/contracts/access/roles/WhitelistedRole.sol",
+        "id": 4,
+        "nodeType": "ImportDirective",
+        "scope": 22,
+        "sourceUnit": 685,
+        "src": "101:90:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -102,246 +234,138 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 4,
+              "id": 5,
+              "name": "WhitelistedRole",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 684,
+              "src": "222:15:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_WhitelistedRole_$684",
+                "typeString": "contract WhitelistedRole"
+              }
+            },
+            "id": 6,
+            "nodeType": "InheritanceSpecifier",
+            "src": "222:15:0"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 7,
               "name": "IValidator",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 294,
-              "src": "131:10:0",
+              "referencedDeclaration": 285,
+              "src": "239:10:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IValidator_$294",
+                "typeIdentifier": "t_contract$_IValidator_$285",
                 "typeString": "contract IValidator"
               }
             },
-            "id": 5,
+            "id": 8,
             "nodeType": "InheritanceSpecifier",
-            "src": "131:10:0"
+            "src": "239:10:0"
           }
         ],
         "contractDependencies": [
-          294
+          285,
+          574,
+          684
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 30,
+        "id": 21,
         "linearizedBaseContracts": [
-          30,
-          294
+          21,
+          285,
+          684,
+          574
         ],
         "name": "ConfirmValidator",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "constant": false,
-            "id": 7,
-            "name": "validator",
-            "nodeType": "VariableDeclaration",
-            "scope": 30,
-            "src": "148:24:0",
-            "stateVariable": true,
-            "storageLocation": "default",
-            "typeDescriptions": {
-              "typeIdentifier": "t_address",
-              "typeString": "address"
-            },
-            "typeName": {
-              "id": 6,
-              "name": "address",
-              "nodeType": "ElementaryTypeName",
-              "src": "148:7:0",
-              "stateMutability": "nonpayable",
-              "typeDescriptions": {
-                "typeIdentifier": "t_address",
-                "typeString": "address"
-              }
-            },
-            "value": null,
-            "visibility": "public"
-          },
-          {
             "body": {
-              "id": 16,
+              "id": 19,
               "nodeType": "Block",
-              "src": "218:39:0",
+              "src": "321:49:0",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 14,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 16,
+                        "name": "_validator",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 10,
+                        "src": "352:10:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 15,
+                      "name": "isWhitelisted",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 618,
+                      "src": "338:13:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
+                        "typeString": "function (address) view returns (bool)"
+                      }
+                    },
+                    "id": 17,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
+                    "kind": "functionCall",
                     "lValueRequested": false,
-                    "leftHandSide": {
-                      "argumentTypes": null,
-                      "id": 12,
-                      "name": "validator",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 7,
-                      "src": "228:9:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "nodeType": "Assignment",
-                    "operator": "=",
-                    "rightHandSide": {
-                      "argumentTypes": null,
-                      "id": 13,
-                      "name": "_validator",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 9,
-                      "src": "240:10:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "src": "228:22:0",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "id": 15,
-                  "nodeType": "ExpressionStatement",
-                  "src": "228:22:0"
-                }
-              ]
-            },
-            "documentation": null,
-            "id": 17,
-            "implemented": true,
-            "kind": "constructor",
-            "modifiers": [],
-            "name": "",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 10,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 9,
-                  "name": "_validator",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 17,
-                  "src": "191:18:0",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 8,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "191:7:0",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "190:20:0"
-            },
-            "returnParameters": {
-              "id": 11,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "218:0:0"
-            },
-            "scope": 30,
-            "src": "179:78:0",
-            "stateMutability": "nonpayable",
-            "superFunction": null,
-            "visibility": "public"
-          },
-          {
-            "body": {
-              "id": 28,
-              "nodeType": "Block",
-              "src": "328:47:0",
-              "statements": [
-                {
-                  "expression": {
-                    "argumentTypes": null,
-                    "commonType": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    },
-                    "id": 26,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": false,
-                    "lValueRequested": false,
-                    "leftExpression": {
-                      "argumentTypes": null,
-                      "id": 24,
-                      "name": "_validator",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 19,
-                      "src": "345:10:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "nodeType": "BinaryOperation",
-                    "operator": "==",
-                    "rightExpression": {
-                      "argumentTypes": null,
-                      "id": 25,
-                      "name": "validator",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 7,
-                      "src": "359:9:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "src": "345:23:0",
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "338:25:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 23,
-                  "id": 27,
+                  "functionReturnParameters": 14,
+                  "id": 18,
                   "nodeType": "Return",
-                  "src": "338:30:0"
+                  "src": "331:32:0"
                 }
               ]
             },
             "documentation": null,
-            "id": 29,
+            "id": 20,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "isValidator",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 20,
+              "id": 11,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 19,
+                  "id": 10,
                   "name": "_validator",
                   "nodeType": "VariableDeclaration",
-                  "scope": 29,
-                  "src": "284:18:0",
+                  "scope": 20,
+                  "src": "277:18:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -349,10 +373,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18,
+                    "id": 9,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "284:7:0",
+                    "src": "277:7:0",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -363,19 +387,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "283:20:0"
+              "src": "276:20:0"
             },
             "returnParameters": {
-              "id": 23,
+              "id": 14,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22,
+                  "id": 13,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 29,
-                  "src": "322:4:0",
+                  "scope": 20,
+                  "src": "315:4:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -383,10 +407,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 21,
+                    "id": 12,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "322:4:0",
+                    "src": "315:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -396,29 +420,29 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "321:6:0"
+              "src": "314:6:0"
             },
-            "scope": 30,
-            "src": "263:112:0",
+            "scope": 21,
+            "src": "256:114:0",
             "stateMutability": "nonpayable",
-            "superFunction": 293,
+            "superFunction": 284,
             "visibility": "external"
           }
         ],
-        "scope": 31,
-        "src": "102:275:0"
+        "scope": 22,
+        "src": "193:179:0"
       }
     ],
-    "src": "0:379:0"
+    "src": "0:374:0"
   },
   "legacyAST": {
     "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/ConfirmValidator.sol",
     "exportedSymbols": {
       "ConfirmValidator": [
-        30
+        21
       ]
     },
-    "id": 31,
+    "id": 22,
     "nodeType": "SourceUnit",
     "nodes": [
       {
@@ -437,8 +461,8 @@
         "file": "./interfaces/IValidator.sol",
         "id": 2,
         "nodeType": "ImportDirective",
-        "scope": 31,
-        "sourceUnit": 295,
+        "scope": 22,
+        "sourceUnit": 286,
         "src": "25:37:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -448,9 +472,20 @@
         "file": "./interfaces/ILiability.sol",
         "id": 3,
         "nodeType": "ImportDirective",
-        "scope": 31,
-        "sourceUnit": 285,
+        "scope": 22,
+        "sourceUnit": 276,
         "src": "63:37:0",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/node_modules/openzeppelin-solidity/contracts/access/roles/WhitelistedRole.sol",
+        "file": "../node_modules/openzeppelin-solidity/contracts/access/roles/WhitelistedRole.sol",
+        "id": 4,
+        "nodeType": "ImportDirective",
+        "scope": 22,
+        "sourceUnit": 685,
+        "src": "101:90:0",
         "symbolAliases": [],
         "unitAlias": ""
       },
@@ -460,246 +495,138 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 4,
+              "id": 5,
+              "name": "WhitelistedRole",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 684,
+              "src": "222:15:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_WhitelistedRole_$684",
+                "typeString": "contract WhitelistedRole"
+              }
+            },
+            "id": 6,
+            "nodeType": "InheritanceSpecifier",
+            "src": "222:15:0"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 7,
               "name": "IValidator",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 294,
-              "src": "131:10:0",
+              "referencedDeclaration": 285,
+              "src": "239:10:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_IValidator_$294",
+                "typeIdentifier": "t_contract$_IValidator_$285",
                 "typeString": "contract IValidator"
               }
             },
-            "id": 5,
+            "id": 8,
             "nodeType": "InheritanceSpecifier",
-            "src": "131:10:0"
+            "src": "239:10:0"
           }
         ],
         "contractDependencies": [
-          294
+          285,
+          574,
+          684
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 30,
+        "id": 21,
         "linearizedBaseContracts": [
-          30,
-          294
+          21,
+          285,
+          684,
+          574
         ],
         "name": "ConfirmValidator",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
-            "constant": false,
-            "id": 7,
-            "name": "validator",
-            "nodeType": "VariableDeclaration",
-            "scope": 30,
-            "src": "148:24:0",
-            "stateVariable": true,
-            "storageLocation": "default",
-            "typeDescriptions": {
-              "typeIdentifier": "t_address",
-              "typeString": "address"
-            },
-            "typeName": {
-              "id": 6,
-              "name": "address",
-              "nodeType": "ElementaryTypeName",
-              "src": "148:7:0",
-              "stateMutability": "nonpayable",
-              "typeDescriptions": {
-                "typeIdentifier": "t_address",
-                "typeString": "address"
-              }
-            },
-            "value": null,
-            "visibility": "public"
-          },
-          {
             "body": {
-              "id": 16,
+              "id": 19,
               "nodeType": "Block",
-              "src": "218:39:0",
+              "src": "321:49:0",
               "statements": [
                 {
                   "expression": {
                     "argumentTypes": null,
-                    "id": 14,
+                    "arguments": [
+                      {
+                        "argumentTypes": null,
+                        "id": 16,
+                        "name": "_validator",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 10,
+                        "src": "352:10:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      }
+                    ],
+                    "expression": {
+                      "argumentTypes": [
+                        {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      ],
+                      "id": 15,
+                      "name": "isWhitelisted",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 618,
+                      "src": "338:13:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_address_$returns$_t_bool_$",
+                        "typeString": "function (address) view returns (bool)"
+                      }
+                    },
+                    "id": 17,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
+                    "kind": "functionCall",
                     "lValueRequested": false,
-                    "leftHandSide": {
-                      "argumentTypes": null,
-                      "id": 12,
-                      "name": "validator",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 7,
-                      "src": "228:9:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "nodeType": "Assignment",
-                    "operator": "=",
-                    "rightHandSide": {
-                      "argumentTypes": null,
-                      "id": 13,
-                      "name": "_validator",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 9,
-                      "src": "240:10:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "src": "228:22:0",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "id": 15,
-                  "nodeType": "ExpressionStatement",
-                  "src": "228:22:0"
-                }
-              ]
-            },
-            "documentation": null,
-            "id": 17,
-            "implemented": true,
-            "kind": "constructor",
-            "modifiers": [],
-            "name": "",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 10,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 9,
-                  "name": "_validator",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 17,
-                  "src": "191:18:0",
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_address",
-                    "typeString": "address"
-                  },
-                  "typeName": {
-                    "id": 8,
-                    "name": "address",
-                    "nodeType": "ElementaryTypeName",
-                    "src": "191:7:0",
-                    "stateMutability": "nonpayable",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    }
-                  },
-                  "value": null,
-                  "visibility": "internal"
-                }
-              ],
-              "src": "190:20:0"
-            },
-            "returnParameters": {
-              "id": 11,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "218:0:0"
-            },
-            "scope": 30,
-            "src": "179:78:0",
-            "stateMutability": "nonpayable",
-            "superFunction": null,
-            "visibility": "public"
-          },
-          {
-            "body": {
-              "id": 28,
-              "nodeType": "Block",
-              "src": "328:47:0",
-              "statements": [
-                {
-                  "expression": {
-                    "argumentTypes": null,
-                    "commonType": {
-                      "typeIdentifier": "t_address",
-                      "typeString": "address"
-                    },
-                    "id": 26,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": false,
-                    "lValueRequested": false,
-                    "leftExpression": {
-                      "argumentTypes": null,
-                      "id": 24,
-                      "name": "_validator",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 19,
-                      "src": "345:10:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "nodeType": "BinaryOperation",
-                    "operator": "==",
-                    "rightExpression": {
-                      "argumentTypes": null,
-                      "id": 25,
-                      "name": "validator",
-                      "nodeType": "Identifier",
-                      "overloadedDeclarations": [],
-                      "referencedDeclaration": 7,
-                      "src": "359:9:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_address",
-                        "typeString": "address"
-                      }
-                    },
-                    "src": "345:23:0",
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "338:25:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
                     }
                   },
-                  "functionReturnParameters": 23,
-                  "id": 27,
+                  "functionReturnParameters": 14,
+                  "id": 18,
                   "nodeType": "Return",
-                  "src": "338:30:0"
+                  "src": "331:32:0"
                 }
               ]
             },
             "documentation": null,
-            "id": 29,
+            "id": 20,
             "implemented": true,
             "kind": "function",
             "modifiers": [],
             "name": "isValidator",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 20,
+              "id": 11,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 19,
+                  "id": 10,
                   "name": "_validator",
                   "nodeType": "VariableDeclaration",
-                  "scope": 29,
-                  "src": "284:18:0",
+                  "scope": 20,
+                  "src": "277:18:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -707,10 +634,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 18,
+                    "id": 9,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "284:7:0",
+                    "src": "277:7:0",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -721,19 +648,19 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "283:20:0"
+              "src": "276:20:0"
             },
             "returnParameters": {
-              "id": 23,
+              "id": 14,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 22,
+                  "id": 13,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 29,
-                  "src": "322:4:0",
+                  "scope": 20,
+                  "src": "315:4:0",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -741,10 +668,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 21,
+                    "id": 12,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "322:4:0",
+                    "src": "315:4:0",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -754,20 +681,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "321:6:0"
+              "src": "314:6:0"
             },
-            "scope": 30,
-            "src": "263:112:0",
+            "scope": 21,
+            "src": "256:114:0",
             "stateMutability": "nonpayable",
-            "superFunction": 293,
+            "superFunction": 284,
             "visibility": "external"
           }
         ],
-        "scope": 31,
-        "src": "102:275:0"
+        "scope": 22,
+        "src": "193:179:0"
       }
     ],
-    "src": "0:379:0"
+    "src": "0:374:0"
   },
   "compiler": {
     "name": "solc",
@@ -775,14 +702,67 @@
   },
   "networks": {
     "4451": {
-      "events": {},
+      "events": {
+        "0xee1504a83b6d4a361f4c1dc78ab59bfa30d6a3b6612c403e86bb01ef2984295f": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "WhitelistedAdded",
+          "type": "event",
+          "signature": "0xee1504a83b6d4a361f4c1dc78ab59bfa30d6a3b6612c403e86bb01ef2984295f"
+        },
+        "0x270d9b30cf5b0793bbfd54c9d5b94aeb49462b8148399000265144a8722da6b6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "WhitelistedRemoved",
+          "type": "event",
+          "signature": "0x270d9b30cf5b0793bbfd54c9d5b94aeb49462b8148399000265144a8722da6b6"
+        },
+        "0x22380c05984257a1cb900161c713dd71d39e74820f1aea43bd3f1bdd20961299": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "WhitelistAdminAdded",
+          "type": "event",
+          "signature": "0x22380c05984257a1cb900161c713dd71d39e74820f1aea43bd3f1bdd20961299"
+        },
+        "0x0a8eb35e5ca14b3d6f28e4abf2f128dbab231a58b56e89beb5d636115001e165": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "WhitelistAdminRemoved",
+          "type": "event",
+          "signature": "0x0a8eb35e5ca14b3d6f28e4abf2f128dbab231a58b56e89beb5d636115001e165"
+        }
+      },
       "links": {},
-      "address": "0x8a919cC91bA1ac88BF5FdCeb116c35f7Dc1Ed179",
-      "transactionHash": "0x80d3db972a0260f939c614780d5a6188d6b3365f1d9c6d181d4dbc4d63096476"
+      "address": "0x1Aa0C020C3AD8F35eB2A7bb25087Cb1e77Ad5f94",
+      "transactionHash": "0x1b503a2a8451896b27b2d775fda96b1d31ee705aed804d7b5a8fbc8669e332e4"
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-08-26T15:17:25.668Z",
+  "updatedAt": "2019-09-10T12:43:40.619Z",
   "devdoc": {
     "methods": {}
   },

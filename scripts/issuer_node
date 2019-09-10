@@ -15,10 +15,10 @@ from issuing_service_agent.ipfs_utils import ipfs_download_txt_file
 # AIRA
 from robonomics_liability.msg import Liability
 from robonomics_liability.srv import StartLiability, FinishLiability
+from ethereum_common.eth_keyfile_helper import KeyfileHelper
 
 # Web3
 from web3 import Web3, HTTPProvider
-from eth_keys import keys
 
 
 class IssuerNode:
@@ -40,17 +40,18 @@ class IssuerNode:
                                           rospy.ServiceProxy('/liability/start', StartLiability),
                                           rospy.ServiceProxy('/liability/finish', FinishLiability))
 
-        web3_http_provider = rospy.get_param('~web3_http_provider')
+        web3_http_provider = rospy.get_param('/liability/listener/web3_http_provider')
         http_provider = HTTPProvider(web3_http_provider)
         self.web3 = Web3(http_provider)
 
         self.emitter_contract = rospy.get_param("~emitter_contract")
         self.emitter_contract_abi = json.loads(rospy.get_param("~emitter_contract_abi"))
 
-        word = rospy.get_param("~private_key").strip()
-        pk = keys.PrivateKey(Web3.toBytes(hexstr=word))
-        self.eth_address = pk.public_key.to_checksum_address()
-        self.private_key = pk.to_hex()
+        keyfile = rospy.get_param('/liability/infochan/eth/signer/keyfile')
+        keyfile_password_file = rospy.get_param('/liability/infochan/eth/signer/keyfile_password_file')
+        self.account = KeyfileHelper(keyfile,
+                                     keyfile_password_file=keyfile_password_file
+                                    ).get_local_account_from_keyfile()
 
         rospy.loginfo('Issuer node is ready!')
 
@@ -104,7 +105,7 @@ class IssuerNode:
 
     def _send_tx(self, total):
         contract = self.web3.eth.contract(address=self.emitter_contract, abi=self.emitter_contract_abi)
-        nonce = self.web3.eth.getTransactionCount(self.eth_address)
+        nonce = self.web3.eth.getTransactionCount(self.account.address)
 
         rospy.loginfo("Sending transaction with args: l {}, a {}".format(self.current_liability.address.address, total))
 
@@ -114,7 +115,8 @@ class IssuerNode:
             'gasPrice': self.web3.toWei('0', 'gwei'), # Sidechain only
             'nonce': nonce,
         })
-        signed_txn = self.web3.eth.account.signTransaction(transfer_txn, self.private_key)
+        signed_txn = self.web3.eth.account.signTransaction(transfer_txn, self.account.privateKey
+)
         tx_hash = self.web3.eth.sendRawTransaction(signed_txn.rawTransaction)
 
         rospy.loginfo("Tx hash {}".format(tx_hash.hex()))
@@ -124,7 +126,13 @@ class IssuerNode:
             rospy.sleep(1)
             receipt = self.web3.eth.getTransactionReceipt(tx_hash.hex())
 
-        token_address = receipt.logs[0].address
+        # rospy.loginfo(receipt)
+        if receipt.status == 1:
+            token_address = receipt.logs[0].address
+            self.pub_status.publish(String("Success"))
+        else:
+            token_address = '0x0000000000000000000000000000000000000000'
+            self.pub_status.publish(String("Fail"))
         rospy.loginfo("Token address: {}".format(token_address))
         self.pub_token.publish(String(data=str(token_address)))
 
@@ -142,6 +150,7 @@ class IssuerNode:
         self.pub_period_start = rospy.Publisher(prefix + '/period_start', String, queue_size=128)
         self.pub_period_end = rospy.Publisher(prefix + '/period_end', String, queue_size=128)
         self.pub_unit = rospy.Publisher(prefix + '/unit', String, queue_size=128)
+        self.pub_status = rospy.Publisher(prefix + '/status', String, queue_size=128)
 
         self.sub_log = rospy.Subscriber(prefix + '/log', String, self.parse_log)
 
@@ -159,6 +168,7 @@ class IssuerNode:
         self.pub_period_start.unregister()
         self.pub_period_end.unregister()
         self.pub_unit.unregister()
+        self.pub_status.unregister()
 
     def spin(self):
         Thread(target=self._process_liability_queue, daemon=True).start()
