@@ -4,7 +4,7 @@ const ConfirmValidator = artifacts.require("ConfirmValidator");
 
 module.exports = async (deployer, network, accounts) => {
     await deployer.deploy(Emitter);
-    await deployer.deploy(ConfirmValidator, accounts[0]);
+    await deployer.deploy(ConfirmValidator);
     // await deployer.deploy(EnergyToken);
 
     //const token = await EnergyToken.deployed();
@@ -13,5 +13,8 @@ module.exports = async (deployer, network, accounts) => {
     const emitter = await Emitter.deployed();
     await emitter.addWhitelisted(accounts[0]);
     await emitter.addWhitelisted("0x964471033d7e1dc435e98337ef8267e23f76c379");   // add CPS' account
+
+    const validator = await ConfirmValidator.deployed();
+    await validator.addWhitelisted(accounts[0]);
 };
 
