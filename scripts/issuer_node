@@ -162,6 +162,8 @@ class IssuerNode:
 
         self.liability_proxy.finish(self.current_liability.address.address, True)
 
+        rospy.sleep(2)
+
         self.pub_token.unregister()
         self.pub_total_production.unregister()
         self.pub_tx.unregister()
