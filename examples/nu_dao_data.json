@@ -1,0 +1,19 @@
+{
+    "id": "701",
+    "name": "solar_panel",
+    "rows": [
+        {
+            "type": "double",
+            "value": 0,
+            "unit": "kWh",
+            "timestamp": "2018-01-01 12:00:00.222926+00"
+        },
+        {
+            "type": "double",
+            "value": 13926,
+            "unit": "kWh",
+            "timestamp": "2019-09-01 12:00:00.899955+00"
+        }
+    ],
+    "total_production": 13926
+}

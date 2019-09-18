@@ -21,7 +21,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"_validator\",\"type\":\"address\"}],\"name\":\"isValidator\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Observing network contract interface\",\"methods\":{\"isValidator(address)\":{\"details\":\"Be sure than address is really validator\",\"return\":\"true when validator address in argument\"}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol\":\"IValidator\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol\":{\"keccak256\":\"0x5a07a552141cda2556c8fa41725e2e63ca34f1c4d3686fb6dcc458f535dd56c4\",\"urls\":[\"bzzr://ff3b3845346bb7be2512022d894a855b000f4322f68daae373449818908d1964\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"_validator\",\"type\":\"address\"}],\"name\":\"isValidator\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Observing network contract interface\",\"methods\":{\"isValidator(address)\":{\"details\":\"Be sure than address is really validator\",\"return\":\"true when validator address in argument\"}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol\":\"IValidator\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol\":{\"keccak256\":\"0x5a07a552141cda2556c8fa41725e2e63ca34f1c4d3686fb6dcc458f535dd56c4\",\"urls\":[\"bzzr://ff3b3845346bb7be2512022d894a855b000f4322f68daae373449818908d1964\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
@@ -280,7 +280,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-09-17T10:32:24.298Z",
+  "updatedAt": "2019-09-17T14:33:54.037Z",
   "devdoc": {
     "details": "Observing network contract interface",
     "methods": {
