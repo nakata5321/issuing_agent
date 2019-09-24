@@ -34,7 +34,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"liability\",\"type\":\"address\"}],\"name\":\"claimCertificate\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"liability\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"issueCertificate\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol\":\"IEmitter\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol\":{\"keccak256\":\"0x6de361e18ec079c9958769176a5477d1d4dbc9669c0bcb813c8e90b88f37d6c5\",\"urls\":[\"bzzr://22b274ccab3063f8cd36a04d72ea3ff0cb382c3b01e0c279d3d8f7908f3ec2a2\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"liability\",\"type\":\"address\"}],\"name\":\"claimCertificate\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"liability\",\"type\":\"address\"},{\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"issueCertificate\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol\":\"IEmitter\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IEmitent.sol\":{\"keccak256\":\"0x6de361e18ec079c9958769176a5477d1d4dbc9669c0bcb813c8e90b88f37d6c5\",\"urls\":[\"bzzr://22b274ccab3063f8cd36a04d72ea3ff0cb382c3b01e0c279d3d8f7908f3ec2a2\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
@@ -401,7 +401,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-09-17T10:32:24.298Z",
+  "updatedAt": "2019-09-17T14:33:54.036Z",
   "devdoc": {
     "methods": {}
   },
