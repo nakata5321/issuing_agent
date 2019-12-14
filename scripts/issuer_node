@@ -50,7 +50,7 @@ class IssuerNode:
         rospy.loginfo("Energy {} kW...".format(energy.data))
 
         # extract total production
-        total = int(energy.data)
+        total = int(float(energy.data))
 
         # send a transaction to the Emitter
         self._send_tx(total)
@@ -95,7 +95,7 @@ class IssuerNode:
         nonce = self.web3.eth.getTransactionCount(self.account.address)
 
         token_deployed = self.web3.eth.contract(address=token_address, abi=abi)
-        mint_txn = token_deployed.functions.mint(self.sender, total).buildTransaction({
+        mint_txn = token_deployed.functions.mint(self.current_liability.promisee.address, total).buildTransaction({
             'chainId': 4451,
             'gas': 4000000,
             'gasPrice': self.web3.toWei('0', 'gwei'), # Sidechain only
@@ -109,7 +109,7 @@ class IssuerNode:
     def subscribe_and_start(self, liability):
         rospy.loginfo('Starting process {}...'.format(liability.address.address))
 
-        self.sender = liability.promisee.address
+        self.current_liability = liability
 
         # Register any topics you need to publish logs, data etc
         prefix = '/liability/eth_' + liability.address.address
