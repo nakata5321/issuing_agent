@@ -26,7 +26,7 @@ install(
 
 install(
     FILES
-       abi/emitter.json
+       abi/EnergyToken.json
     DESTINATION
         ${CATKIN_PACKAGE_SHARE_DESTINATION}/abi
 )

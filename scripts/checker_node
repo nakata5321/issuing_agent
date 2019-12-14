@@ -15,7 +15,6 @@ from robonomics_msgs.msg import Offer, Demand
 from ethereum_common.msg import Address, UInt256
 from ethereum_common.srv import Accounts, BlockNumber
 from ipfs_common.msg import Multihash
-from issuing_service_agent.ipfs_utils import ipfs_download, ipfs_download_txt_file
 
 
 class CheckerNode:
@@ -29,49 +28,23 @@ class CheckerNode:
         self.accounts = rospy.ServiceProxy('/eth/accounts', Accounts)()
         rospy.loginfo(str(self.accounts))  # AIRA ethereum addresses
 
-        rospy.Subscriber('/liability/infochan/incoming/demand',
-                         Demand, self.on_incoming_demand)
+        rospy.Subscriber('/liability/infochan/incoming/demand', Demand, self.on_incoming_demand)
 
-        self.signing_offer = rospy.Publisher(
-            '/liability/infochan/eth/signing/offer', Offer, queue_size=128)
+        self.signing_offer = rospy.Publisher('/liability/infochan/eth/signing/offer', Offer, queue_size=128)
 
         rospy.loginfo('Checker node is ready!')
-
-    def act(self, incoming):
-        objective_bag = ipfs_download(incoming.objective)
-
-        log_data = self.extract_log(objective_bag['/log'].data)
-        rospy.loginfo("Logdata {}".format(log_data))
-
-        ''' CHECK THE LOG FILE
-        for row in log_data["rows"]:
-            rospy.loginfo("Checking '{}'".format(row))
-            pass # TODO
-        '''
-
-        rospy.loginfo("Looks good! Publishing a demand message")
-        self.make_offer(incoming)
-
-    def extract_log(self, ipfs_hash):
-        rospy.loginfo("Downloading log: {}".format(ipfs_hash))
-
-        res = ipfs_download_txt_file(ipfs_hash)
-        return json.loads(res)
-
-        # TODO raise exception
 
     def on_incoming_demand(self, incoming: Demand):
         rospy.loginfo('Incoming demand %s...', str(incoming))
         if (incoming.model.multihash == rospy.get_param('~model') and incoming.token.address == rospy.get_param('~token')):
             rospy.loginfo('For my model and token!')
-            self.act(incoming)  # reactive strategy
+            self.make_offer(incoming)  # reactive strategy
         else:
             rospy.loginfo('Not fits my model or token, skip it.')
 
     def make_deadline(self):
         lifetime = int(rospy.get_param('~order_lifetime'))
-        deadline = rospy.ServiceProxy(
-            '/eth/current_block', BlockNumber)().number + lifetime
+        deadline = rospy.ServiceProxy('/eth/current_block', BlockNumber)().number + lifetime
         return str(deadline)
 
     def make_offer(self, incoming):
@@ -86,12 +59,7 @@ class CheckerNode:
         offer.cost = incoming.cost
         offer.lighthouse = Address()
         offer.lighthouse.address = rospy.get_param('~lighthouse')
-
-        if incoming.validator.address == '0x0000000000000000000000000000000000000000':
-            offer.validator = incoming.validator
-        else:
-            offer.validator = Address(rospy.get_param('~validator'))
-
+        offer.validator = incoming.validator
         offer.lighthouseFee = UInt256()
         offer.lighthouseFee.uint256 = '0'
         offer.deadline = UInt256()

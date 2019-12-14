@@ -1,13 +1,12 @@
 <launch>
-    <arg name="emitter_contract" default="0x4b255d6E57409232F7C29759D5699dabE66f8Cd5" />
-    <arg name="validator" default="0x8a919cC91bA1ac88BF5FdCeb116c35f7Dc1Ed179" />
-    <arg name="lighthouse" default="0xddC8b7F57a8D59AF88C26ea1dd552f965dE1a8A0" />
-    <arg name="token" default="0x7dE91B204C1C737bcEe6F000AAA6569Cf7061cb7" />
+    <arg name="validator" default="0x0000000000000000000000000000000000000000" />
+    <arg name="lighthouse" default="0x202a09A451DE674d2d65Bf1C90968a8d8F72cf7b" />
+    <arg name="token" default="0x966EbbFD7ECbCF44b1e05341976e0652CFA01360" />
 
     <group ns="checker">
         <node name="checker" pkg="issuing_service_agent" type="checker_node" output="screen">
             <param name="lighthouse" value="$(arg lighthouse)" />
-            <param name="model" value="QmfK3LyEPLoYJCKXate1PceGLBNBaodwqcV9XirwHZFbsc" />
+            <param name="model" value="QmUB6ajZTLLMZg7re1v4hw44aoG8HDQDHr9JyujU264Aw2" />
             <param name="token" value="$(arg token)" />
             <param name="validator" value="$(arg validator)" />
             <param name="order_lifetime" value="100" />
@@ -16,8 +15,7 @@
 
     <group ns="issuer">
         <node name="issuer" pkg="issuing_service_agent" type="issuer_node" output="screen">
-            <param name="emitter_contract" value="$(arg emitter_contract)" />
-            <param name="emitter_contract_abi" textfile="$(find issuing_service_agent)/abi/emitter.json" />
+            <param name="energy_contract_json" textfile="$(find issuing_service_agent)/abi/EnergyToken.json" />
         </node>
     </group>
 </launch>
