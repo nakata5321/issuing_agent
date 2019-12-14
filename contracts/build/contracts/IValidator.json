@@ -21,15 +21,15 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"_validator\",\"type\":\"address\"}],\"name\":\"isValidator\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Observing network contract interface\",\"methods\":{\"isValidator(address)\":{\"details\":\"Be sure than address is really validator\",\"return\":\"true when validator address in argument\"}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol\":\"IValidator\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol\":{\"keccak256\":\"0x5a07a552141cda2556c8fa41725e2e63ca34f1c4d3686fb6dcc458f535dd56c4\",\"urls\":[\"bzzr://ff3b3845346bb7be2512022d894a855b000f4322f68daae373449818908d1964\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"_validator\",\"type\":\"address\"}],\"name\":\"isValidator\",\"outputs\":[{\"name\":\"\",\"type\":\"bool\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"details\":\"Observing network contract interface\",\"methods\":{\"isValidator(address)\":{\"details\":\"Be sure than address is really validator\",\"return\":\"true when validator address in argument\"}}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/vadim/Projects/issuing_agent/contracts/contracts/interfaces/IValidator.sol\":\"IValidator\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/vadim/Projects/issuing_agent/contracts/contracts/interfaces/IValidator.sol\":{\"keccak256\":\"0x5a07a552141cda2556c8fa41725e2e63ca34f1c4d3686fb6dcc458f535dd56c4\",\"urls\":[\"bzzr://ff3b3845346bb7be2512022d894a855b000f4322f68daae373449818908d1964\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.5.0;\n\n/**\n * @dev Observing network contract interface\n */\ncontract IValidator {\n    /**\n     * @dev Be sure than address is really validator\n     * @return true when validator address in argument\n     */\n    function isValidator(address _validator) external returns (bool);\n}\n\n",
-  "sourcePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol",
+  "sourcePath": "/home/vadim/Projects/issuing_agent/contracts/contracts/interfaces/IValidator.sol",
   "ast": {
-    "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol",
+    "absolutePath": "/home/vadim/Projects/issuing_agent/contracts/contracts/interfaces/IValidator.sol",
     "exportedSymbols": {
       "IValidator": [
         285
@@ -152,7 +152,7 @@
     "src": "0:297:6"
   },
   "legacyAST": {
-    "absolutePath": "/home/vadim/Projects/issuing-service-package/contracts/contracts/interfaces/IValidator.sol",
+    "absolutePath": "/home/vadim/Projects/issuing_agent/contracts/contracts/interfaces/IValidator.sol",
     "exportedSymbols": {
       "IValidator": [
         285
@@ -279,8 +279,8 @@
     "version": "0.5.7+commit.6da8b019.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.11",
-  "updatedAt": "2019-09-17T14:33:54.037Z",
+  "schemaVersion": "3.0.19",
+  "updatedAt": "2019-12-14T14:21:12.963Z",
   "devdoc": {
     "details": "Observing network contract interface",
     "methods": {

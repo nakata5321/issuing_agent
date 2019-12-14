@@ -3,6 +3,7 @@
 
 # Standart, System and Third party
 import json
+from collections import namedtuple
 
 # ROS
 import rospy
@@ -64,7 +65,7 @@ class IssuerNode:
 
         deploy_txn = energy_token.constructor().buildTransaction({
             'chainId': 4451,
-            'gas': 2000000,
+            'gas': 4000000,
             'gasPrice': self.web3.toWei('0', 'gwei'), # Sidechain only
             'nonce': nonce
             })
@@ -81,7 +82,7 @@ class IssuerNode:
         tx_receipt = self.web3.eth.waitForTransactionReceipt(tx_hash)
 
         rospy.loginfo(tx_receipt)
-        if receipt.status == 1:
+        if tx_receipt.status == 1:
             token_address = tx_receipt.contractAddress
             self.pub_status.publish(String("Success"))
         else:
@@ -91,10 +92,12 @@ class IssuerNode:
         self.pub_token.publish(String(data=str(token_address)))
 
         # Mint tokens
-        token_deployed = self.web3.contract(address=token_address, abi=abi)
+        nonce = self.web3.eth.getTransactionCount(self.account.address)
+
+        token_deployed = self.web3.eth.contract(address=token_address, abi=abi)
         mint_txn = token_deployed.functions.mint(self.sender, total).buildTransaction({
             'chainId': 4451,
-            'gas': 2000000,
+            'gas': 4000000,
             'gasPrice': self.web3.toWei('0', 'gwei'), # Sidechain only
             'nonce': nonce
             })
@@ -105,6 +108,8 @@ class IssuerNode:
 
     def subscribe_and_start(self, liability):
         rospy.loginfo('Starting process {}...'.format(liability.address.address))
+
+        self.sender = liability.promisee.address
 
         # Register any topics you need to publish logs, data etc
         prefix = '/liability/eth_' + liability.address.address
@@ -118,17 +123,14 @@ class IssuerNode:
         self.liability_proxy.start(liability.address)
 
     def unregister_all(self):
-        self.sub_log.unregister()
+        self.sub_energy.unregister()
 
         self.liability_proxy.finish(self.current_liability.address, True)
 
         rospy.sleep(2)
 
         self.pub_token.unregister()
-        self.pub_total_production.unregister()
         self.pub_tx.unregister()
-        self.pub_period_start.unregister()
-        self.pub_period_end.unregister()
         self.pub_unit.unregister()
         self.pub_status.unregister()
 

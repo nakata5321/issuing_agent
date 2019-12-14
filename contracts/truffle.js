@@ -1,5 +1,5 @@
-const HDWalletProvider = require("truffle-hdwallet-provider");
-const privateKey = "";
+// const HDWalletProvider = require("truffle-hdwallet-provider");
+// const privateKey = "";
 
 
 module.exports = {
@@ -27,12 +27,12 @@ module.exports = {
             network_id: 42,
             skipDryRun: true
         },*/
-        mainnet: {
+        /*mainnet: {
             provider: new HDWalletProvider(privateKey, "https://mainnet.infura.io/v3/c763c5a7702c4ec4a3625556cf16a4a7"),
             network_id: 1,
             gasPrice: 30000000000,
             skipDryRun: true
-        }
+        }*/
     },
     compilers: {
         solc: {
@@ -42,7 +42,7 @@ module.exports = {
                     enabled: true,
                     runs: 200
                 },
-                evmVersion: "petersburg"
+                evmVersion: "byzantium"
             }
         }
     },
