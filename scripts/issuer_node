@@ -92,9 +92,25 @@ class IssuerNode:
 
         rospy.loginfo("Tx hash {}".format(tx_hash.hex()))
 
+        i = 0
+        loading = ['|', '/', '-', '\\']
+
+        receipt = None
+        while receipt is None:
+            out = "{} Waiting...".format(loading[i])
+            print(out, end='\r')
+            rospy.sleep(1)
+
+            i += 1
+            if i == 4:
+                print(len(out) * ' ', end='\r')
+                i = 0
+
+            receipt = self.web3.eth.getTransactionReceipt(tx_hash.hex())
+
         tx_receipt = self.web3.eth.waitForTransactionReceipt(tx_hash)
 
-        rospy.loginfo(tx_receipt)
+        # rospy.loginfo(tx_receipt)
         if tx_receipt.status == 1:
             token_address = tx_receipt.contractAddress
             self.pub_status.publish(String("Success"))
