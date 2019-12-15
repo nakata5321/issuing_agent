@@ -2,6 +2,9 @@
     <arg name="validator" default="0x0000000000000000000000000000000000000000" />
     <arg name="lighthouse" default="0x202a09A451DE674d2d65Bf1C90968a8d8F72cf7b" />
     <arg name="token" default="0x966EbbFD7ECbCF44b1e05341976e0652CFA01360" />
+    <arg name="contract_abi" default="$(find issuing_service_agent/abi/EnergyTokenPetersburg.json)" />
+    <arg name="network" default="mainnet" />
+    <arg name="gasprice" default="3" />
 
     <group ns="checker">
         <node name="checker" pkg="issuing_service_agent" type="checker_node" output="screen">
@@ -15,7 +18,9 @@
 
     <group ns="issuer">
         <node name="issuer" pkg="issuing_service_agent" type="issuer_node" output="screen">
-            <param name="energy_contract_json" textfile="$(find issuing_service_agent)/abi/EnergyToken.json" />
+            <param name="energy_contract_json" textfile="$(arg contract_abi)" />
+            <param name="network" value="$(arg network)" />
+            <param name="gasprice" value="$(arg gasprice)" />
         </node>
     </group>
 </launch>

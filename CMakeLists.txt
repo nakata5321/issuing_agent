@@ -26,7 +26,8 @@ install(
 
 install(
     FILES
-       abi/EnergyToken.json
+       abi/EnergyTokenByzantium.json
+       abi/EnergyTokenPetersburg.json
     DESTINATION
         ${CATKIN_PACKAGE_SHARE_DESTINATION}/abi
 )

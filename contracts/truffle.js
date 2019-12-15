@@ -21,6 +21,13 @@ module.exports = {
             gas: 4000000,
             gasPrice: 0
         },
+        mainnet: {
+            host: '127.0.0.1',
+            port: 8545,
+            network_id: 1,
+            gasPrice: 30000000000,
+            skipDryRun: true
+        }
         /*
         kovan: {
             provider: new HDWalletProvider(privateKey, "https://kovan.infura.io/v3/<API_KEY>"),
@@ -42,7 +49,7 @@ module.exports = {
                     enabled: true,
                     runs: 200
                 },
-                evmVersion: "byzantium"
+                evmVersion: "petersburg"
             }
         }
     },
