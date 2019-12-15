@@ -63,7 +63,7 @@ class IssuerNode:
         abi=self.energy_contract_json["abi"]
         energy_token = self.web3.eth.contract(abi=abi, bytecode=self.energy_contract_json["bytecode"])
 
-        deploy_txn = energy_token.constructor().buildTransaction({
+        deploy_txn = energy_token.constructor(self.current_liability.promisee.address, total).buildTransaction({
             'chainId': 4451,
             'gas': 4000000,
             'gasPrice': self.web3.toWei('0', 'gwei'), # Sidechain only
@@ -92,6 +92,7 @@ class IssuerNode:
         self.pub_token.publish(String(data=str(token_address)))
 
         # Mint tokens
+        '''
         nonce = self.web3.eth.getTransactionCount(self.account.address)
 
         token_deployed = self.web3.eth.contract(address=token_address, abi=abi)
@@ -105,6 +106,7 @@ class IssuerNode:
         tx_hash = self.web3.eth.sendRawTransaction(signed_txn.rawTransaction)
 
         rospy.loginfo("Mint tx hash {}".format(tx_hash.hex()))
+        '''
 
     def subscribe_and_start(self, liability):
         rospy.loginfo('Starting process {}...'.format(liability.address.address))

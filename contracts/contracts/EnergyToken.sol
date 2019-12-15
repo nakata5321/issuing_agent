@@ -5,8 +5,8 @@ import '../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20Detaile
 import '../node_modules/openzeppelin-solidity/contracts/token/ERC20/ERC20Burnable.sol';
 
 contract EnergyToken is ERC20Detailed, ERC20Mintable, ERC20Burnable {
-  constructor() ERC20Detailed("Green Certificate Token", "GCT", 3) public {
-
+  constructor(address account, uint256 amount) ERC20Detailed("Green Certificate Token", "GCT", 3) public {
+    mint(account, amount);
   }
 }
 
