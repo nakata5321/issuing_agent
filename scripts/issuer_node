@@ -47,18 +47,22 @@ class IssuerNode:
         rospy.loginfo('Issuer node is ready!')
 
     def task(self, energy):
-        rospy.loginfo("Energy {} kW...".format(energy.data))
+        rospy.loginfo("Calculating the amount of tokens...")
 
         # extract total production
         total = int(float(energy.data))
+        rospy.loginfo("{} kW = {} tokens".format(energy.data, total))
 
         # send a transaction to the Emitter
         self._send_tx(total)
 
         self.unregister_all()
-        rospy.loginfo('Process complete.')
+        rospy.loginfo('The task is completed!')
+        rospy.loginfo("Sending the result message to Robonomics Network")
 
     def _send_tx(self, total):
+        rospy.loginfo("Proceeding the task...")
+
         nonce = self.web3.eth.getTransactionCount(self.account.address)
         abi=self.energy_contract_json["abi"]
         energy_token = self.web3.eth.contract(abi=abi, bytecode=self.energy_contract_json["bytecode"])
@@ -78,7 +82,8 @@ class IssuerNode:
                 'nonce': nonce
                 })
 
-        rospy.loginfo("Deploing smart contract")
+        rospy.loginfo("Deploing ERC20 smart contract with {} tokens for {} account"
+                      .format(total, self.current_liability.promisee.address))
 
         signed_txn = self.web3.eth.account.signTransaction(deploy_txn, self.account.privateKey)
         tx_hash = self.web3.eth.sendRawTransaction(signed_txn.rawTransaction)
@@ -96,11 +101,15 @@ class IssuerNode:
         else:
             token_address = '0x0000000000000000000000000000000000000000'
             self.pub_status.publish(String("Fail"))
-        rospy.loginfo("Token address: {}".format(token_address))
+        rospy.loginfo("Success! Token address: {}".format(token_address))
         self.pub_token.publish(String(data=str(token_address)))
 
     def subscribe_and_start(self, liability):
-        rospy.loginfo('Starting process {}...'.format(liability.address.address))
+        promisee = liability.promisee.address
+        promisor = liability.promisor.address
+
+        rospy.loginfo("Liability smart contract between {} and {} is created by {} with hash {}"
+                      .format(promisee, promisor, "0x420029e64F849AA3De300D2ad86075aD32f01680", liability.objective.multihash))
 
         self.current_liability = liability
 
