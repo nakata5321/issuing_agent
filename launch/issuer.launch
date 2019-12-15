@@ -1,7 +1,7 @@
 <launch>
     <arg name="validator" default="0x0000000000000000000000000000000000000000" />
-    <arg name="lighthouse" default="0x202a09A451DE674d2d65Bf1C90968a8d8F72cf7b" />
-    <arg name="token" default="0x966EbbFD7ECbCF44b1e05341976e0652CFA01360" />
+    <arg name="lighthouse" default="0xD40AC7F1e5401e03D00F5aeC1779D8e5Af4CF9f1" />
+    <arg name="token" default="0x7dE91B204C1C737bcEe6F000AAA6569Cf7061cb7" />
     <arg name="contract_abi" default="$(find issuing_service_agent)/abi/EnergyTokenPetersburg.json)" />
     <arg name="network" default="mainnet" />
     <arg name="gasprice" default="3" />
