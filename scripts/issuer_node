@@ -51,7 +51,8 @@ class IssuerNode:
 
         # extract total production
         total = int(float(energy.data))
-        rospy.loginfo("{} kW = {} tokens".format(energy.data, total))
+        total = int(total / 1000) * 1000
+        rospy.loginfo("{} kW = {} tokens".format(energy.data, int(total/1000)))
 
         # send a transaction to the Emitter
         self._send_tx(total)
@@ -83,7 +84,7 @@ class IssuerNode:
                 })
 
         rospy.loginfo("Deploing ERC20 smart contract with {} tokens for {} account"
-                      .format(total, self.current_liability.promisee.address))
+                      .format(int(total/1000), self.current_liability.promisee.address))
 
         signed_txn = self.web3.eth.account.signTransaction(deploy_txn, self.account.privateKey)
         tx_hash = self.web3.eth.sendRawTransaction(signed_txn.rawTransaction)

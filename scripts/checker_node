@@ -35,7 +35,7 @@ class CheckerNode:
         rospy.loginfo('Checker node is ready!')
 
     def on_incoming_demand(self, incoming: Demand):
-        rospy.loginfo("Received new request to issue new certificates with hash {}".format(incoming.objective.multihash))
+        rospy.loginfo("Received new request to issue green certificates with hash {} of the data".format(incoming.objective.multihash))
         rospy.loginfo("Checking the log...")
         if (incoming.model.multihash == rospy.get_param('~model') and incoming.token.address == rospy.get_param('~token')):
             rospy.loginfo('Accepting the request in Robonomics Network')
