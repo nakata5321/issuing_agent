@@ -11,7 +11,7 @@ mkRosPackage rec {
 
   src = ./.;
 
-  propagatedBuildInputs = [ robonomics_comm pkgs.python37Packages.web3 ];
+  propagatedBuildInputs = [ robonomics_comm pkgs.python3Packages.web3 pkgs.python3Packages.empy];
 
   meta = with stdenv.lib; {
     description = "Issuing service agent for the renewable energy source";
