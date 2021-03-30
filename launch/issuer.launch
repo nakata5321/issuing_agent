@@ -1,7 +1,7 @@
 <launch>
     <arg name="emitter_contract" default="0x4b255d6E57409232F7C29759D5699dabE66f8Cd5" />
-    <arg name="validator" default="0x8a919cC91bA1ac88BF5FdCeb116c35f7Dc1Ed179" />
-    <arg name="lighthouse" default="0xddC8b7F57a8D59AF88C26ea1dd552f965dE1a8A0" />
+    <arg name="validator" default="0xaB47917719b01D102b434a7ca68335bB117e42e1" />
+    <arg name="lighthouse" default="0xD40AC7F1e5401e03D00F5aeC1779D8e5Af4CF9f1" />
     <arg name="token" default="0x7dE91B204C1C737bcEe6F000AAA6569Cf7061cb7" />
 
     <group ns="checker">
@@ -21,4 +21,3 @@
         </node>
     </group>
 </launch>
-

@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> { }
 , stdenv
 , mkRosPackage
-, robonomics_comm
+, robonomics_comm-nightly
 }:
 
 mkRosPackage rec {
@@ -11,7 +11,7 @@ mkRosPackage rec {
 
   src = ./.;
 
-  propagatedBuildInputs = [ robonomics_comm pkgs.python3Packages.web3 pkgs.python3Packages.empy];
+  propagatedBuildInputs = [ robonomics_comm-nightly pkgs.python3Packages.web3 pkgs.python3Packages.empy];
 
   meta = with stdenv.lib; {
     description = "Issuing service agent for the renewable energy source";

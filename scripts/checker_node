@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Standart, System and Third Party
-from ipfsapi import connect
+from ipfshttpclient import connect
 from tempfile import gettempdir, NamedTemporaryFile
 import os
 import json
@@ -106,4 +106,3 @@ class CheckerNode:
 
 if __name__ == '__main__':
     CheckerNode().spin()
-

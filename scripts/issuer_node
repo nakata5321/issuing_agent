@@ -19,6 +19,7 @@ from ethereum_common.eth_keyfile_helper import KeyfileHelper
 
 # Web3
 from web3 import Web3, HTTPProvider
+from web3.gas_strategies.time_based import medium_gas_price_strategy
 
 
 class IssuerNode:
@@ -117,10 +118,15 @@ class IssuerNode:
             'nonce': nonce,
         })
         '''
+        #calculate gas limit and gas gasPrice
+        gas_estimate = contract.functions.issueCertificate(self.current_liability.address.address, total).estimateGas() #calculate gas limit
+        w3.eth.setGasPriceStrategy(medium_gas_price_strategy) #choose medium gas prise
+        gas_price = w3.eth.generateGasPrice() # generate current gas prise
+
         transfer_txn = contract.functions.issueCertificate(self.current_liability.address.address, total).buildTransaction({
             'chainId': 1,
-            'gas': 1000000,
-            'gasPrice': self.web3.toWei('10', 'gwei'),
+            'gas' : gas_estimate,
+            'gasPrice' : gas_price,
             'nonce': nonce,
         })
 
@@ -164,12 +170,12 @@ class IssuerNode:
         self.sub_log = rospy.Subscriber(prefix + '/log', String, self.parse_log)
 
         self.current_liability = liability
-        self.liability_proxy.start(liability.address.address)
+        self.liability_proxy.start(liability.address)
 
     def unregister_all(self):
         self.sub_log.unregister()
 
-        self.liability_proxy.finish(self.current_liability.address.address, True)
+        self.liability_proxy.finish(self.current_liability.address, True)
 
         rospy.sleep(2)
 
@@ -188,4 +194,3 @@ class IssuerNode:
 
 if __name__ == "__main__":
     IssuerNode().spin()
-

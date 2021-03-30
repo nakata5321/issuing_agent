@@ -69,8 +69,33 @@ nix build -f release.nix
 ```
 
 ## Run
-
+To launch manually run:
 ```
 source result/setup.zsh
-roslaunch issuing_service_agent issuer.launch keyfile:=./keyfile
+roslaunch issuing_service_agent issuer.launch
+```
+or as a NixOS service add the following lines to `/etc/nixos/configuration.nix`:
+```
+    # enable issuing agent servise
+    systemd.services.issuing_agent = {
+      enable = true;
+      description = "Service for issuing agent";
+      requires = [ "roscore.service" ];
+      after = ["roscore.service" ];
+      wantedBy = [ "multi-user.target" ];
+      script = ''
+        source /var/lib/liability/issuing_agent/result/setup.bash \
+        && roslaunch issuing_service_agent issuer.launch
+      '';
+      serviceConfig = {
+         Restart = "on-failure";
+         StartLimitInterval = 0;
+         RestartSec = 60;
+         User = "liability";
+         };
+      };  
+```
+and apply changes:
+```
+nixos-rebuild switch
 ```
